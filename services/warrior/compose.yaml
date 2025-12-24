@@ -1,0 +1,32 @@
+x-podman:
+  in_pod: false
+
+services:
+  warrior:
+    image: atdr.meo.ws/archiveteam/warrior-dockerfile:latest
+    container_name: warrior
+    hostname: warrior
+    restart: on-failure:3
+    mem_limit: 512m
+    user: 1000:1000
+    userns_mode: "keep-id:uid=1000,gid=1000"
+    env_file: .env
+    volumes:
+      - ./data:/home/warrior/data/projects:Z
+    labels:
+      caddy: http://warrior.mydomain.lan, warrior.mydomain.com
+      caddy.reverse_proxy: "{{ upstreams 8001 }}"
+      caddy.header: "-X-Frame-Options"
+      caddy.log:
+      caddy.sablier.session_duration: 2h
+      caddy.sablier.names: warrior
+      caddy.sablier.dynamic:
+      sablier.enable: true
+      com.centurylinklabs.watchtower.enable: true
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: proxy
