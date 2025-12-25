@@ -15,7 +15,7 @@ services:
     volumes:
       - ./data:/data:Z
     labels:
-      caddy: http://nodered.mydomain.lan, nodered.mydomain.com
+      caddy: http://nodered.example.lan, nodered.example.com
       caddy.reverse_proxy: "{{ upstreams 1880 }}"
       caddy.header: "-X-Frame-Options"
       caddy.log:

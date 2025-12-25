@@ -16,7 +16,7 @@ services:
       - /run/user/1000/podman/podman.sock:/var/run/docker.sock:ro,z
       - /mnt/data:/mnt/data:ro
     labels:
-      caddy: http://mydomain.lan, mydomain.com
+      caddy: http://example.lan, example.com
       caddy.reverse_proxy: "{{ upstreams 8080 }}"
       caddy.header: "-X-Frame-Options"
       caddy.log:
