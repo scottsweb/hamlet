@@ -101,3 +101,79 @@ sudo cryptsetup luksDump /dev/nvme0n1p4
 sudo clevis luks unbind -d /dev/nvme0n1p4 -s 1
 ```
 
+## ZFS
+
+### Enable the ZFS kernel module
+
+```bash
+echo zfs > /etc/modules-load.d/zfs.conf
+```
+
+### Create a USB encryption key for ZFS
+
+```bash
+# create the key file on same USB drive as before
+dd if=/dev/urandom of=/mnt/pendrive/zfs-key bs=1 count=32
+```
+
+Auto mount the USB drive on each boot adding the following to `/etc/fstab`:
+
+```bash
+# the device UUID can be found with ls -l /dev/disk/by-uuid
+UUID=e3ec4e11-2d55-2cfb-82a9-b22ff935e21c /mnt/pendrive auto ro,nofail 0 0
+```
+
+### Create the ZFS pool manually
+
+I had some issues setting up a mirrored pool in the [Cockpit](https://cockpit-project.org/) interface as my two disks are slightly different sizes, so created the pool manually:
+
+```bash
+sudo zpool create -o ashift=12 -o autotrim=on -o autoreplace=on -o autoexpand=on -O encryption=aes-256-gcm -O keyformat=raw -O keylocation=file:///var/mnt/pendrive/zfs-key -O compression=lz4 -O atime=off -O casesensitivity=insensitive -f -m /var/mnt/data data mirror /dev/disk/by-path/pci-0000:03:00.0-nvme-1 /dev/disk/by-path/pci-0000:02:00.0-nvme-1
+```
+
+### Unlock the ZFS pool at boot
+
+Create a new service unit file at `/etc/systemd/system/zfs-load-key@.service`:
+
+```bash
+[Unit]
+Description=Load ZFS keys
+DefaultDependencies=no
+Before=zfs-mount.service
+After=zfs-import.target
+Requires=zfs-import.target
+RequiresMountsFor=/mnt/pendrive/zfs-key
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/sbin/zfs load-key %I
+
+[Install]
+WantedBy=zfs-mount.service
+```
+
+And enable it for the `data` pool with `sudo systemctl daemon-reload`, followed by `sudo systemctl enable zfs-load-key@data`.
+
+References: [How to auto load-key and mount natively encrypted ZFS Pool](https://forum.openmediavault.org/index.php?thread/40525-how-to-auto-load-key-and-mount-natively-encrypted-zfs-pool-no-luks/), [Mounting encrypted datasets automatically](https://github.com/openzfs/zfs/issues/8750#issuecomment-497500144), [Best practices for unlocking ZFS dataset](https://www.reddit.com/r/zfs/comments/w33bss/looking_for_best_practice_for_unlocking_encrypted/)
+
+### Unmount the USB drive after boot
+
+USB drives have a habit of wearing out, so I figured it is good to unmount the drive once everything is unlocked. If you want to do the same, create a new unit file at `/etc/systemd/system/zfs-unload-key-after-boot.service`:
+
+```bash
+[Unit]
+Description=Unmount ZFS key after boot
+After=multi-user.target
+Requires=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/umount /var/mnt/pendrive
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+And enable it with `sudo systemctl daemon-reload`, followed by `sudo systemctl enable zfs-unload-key-after-boot`.
