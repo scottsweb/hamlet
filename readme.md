@@ -135,7 +135,7 @@ sudo zpool create -o ashift=12 -o autotrim=on -o autoreplace=on -o autoexpand=on
 
 Create a new service unit file at `/etc/systemd/system/zfs-load-key@.service`:
 
-```bash
+```desktop
 [Unit]
 Description=Load ZFS keys
 DefaultDependencies=no
