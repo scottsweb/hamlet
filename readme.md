@@ -161,7 +161,7 @@ References: [How to auto load-key and mount natively encrypted ZFS Pool](https:/
 
 USB drives have a habit of wearing out, so I figured it is good to unmount the drive once everything is unlocked. If you want to do the same, create a new unit file at `/etc/systemd/system/zfs-unload-key-after-boot.service`:
 
-```bash
+```desktop
 [Unit]
 Description=Unmount ZFS key after boot
 After=multi-user.target
