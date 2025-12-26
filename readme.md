@@ -131,6 +131,10 @@ I had some issues setting up a mirrored pool in the [Cockpit](https://cockpit-pr
 sudo zpool create -o ashift=12 -o autotrim=on -o autoreplace=on -o autoexpand=on -O encryption=aes-256-gcm -O keyformat=raw -O keylocation=file:///var/mnt/pendrive/zfs-key -O compression=lz4 -O atime=off -O casesensitivity=insensitive -f -m /var/mnt/data data mirror /dev/disk/by-path/pci-0000:03:00.0-nvme-1 /dev/disk/by-path/pci-0000:02:00.0-nvme-1
 ```
 
+I was then able to setup the individual filesystems with Cockpit (`http://localip:9090`), ensuring the correct permissions are set either in the UI or with `sudo chown $USER:$USER /var/mnt/data/myfiles` and `sudo chmod 755 /var/mnt/data/myfiles`.
+
+References: [Silverblue and Cockpit](https://www.youtube.com/watch?v=30ICVF0LRsY), [ZFS management with Cockpit](https://www.youtube.com/watch?v=A711MXlyFac)
+
 ### Unlock the ZFS pool at boot
 
 Create a new service unit file at `/etc/systemd/system/zfs-load-key@.service`:
