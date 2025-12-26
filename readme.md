@@ -53,3 +53,51 @@ sudo cryptsetup --verbose open --test-passphrase /dev/nvme0n1p4
 sudo rm tmpkey
 ```
 
+### Add a USB LUKS key
+
+```bash
+# create a key file on an external USB drive / memory pen (I did this on my laptop), the drive is formatted as ext4
+dd if=/dev/urandom of=/run/media/user/key-drive/boot-key bs=4096 count=1 
+
+# mount the USB drive on the server, us sudo dmesg or lsblk to find the /dev path
+sudo mount -t auto /dev/sda /mnt/pendrive
+
+# change the permissions of the boot-key
+sudo chmod 600 /mnt/pendrive/boot-key
+
+# add the boot-key as a method to unlock LUKS
+sudo crypsudo cryptsetup luksAddKey /dev/nvme0n1p4 /mnt/pendrive/boot-key
+
+# check the keys correctly in place
+sudo cryptsetup luksDump /dev/nvme0n1p4
+```
+
+Now we need to make sure the USB key unlocks the drive at boot time:
+
+```bash
+# check the device ID for the USB drive / pen and also the partition you wish to unlock
+ls -l /dev/disk/by-uuid
+
+# edit the boot args using the default editor
+rpm-ostree kargs --editor
+
+# add the following to the file, with the IDs from above, in this example a544... is the root/boot partition and e3ec... the USB key
+rd.luks.name=a54462a1-e264-1fa9-83b4-4e9efab84a33=root 
+rd.luks.key=a54462a1-e264-1fa9-83b4-4e9efab84a33=/beep-boot:UUID=e3ec4e11-2d55-2cfb-82a9-b22ff935e21c 
+rd.luks.options=a54462a1-e264-1fa9-83b4-4e9efab84a33=keyfile-timeout=5s
+
+# save these changes and reboot
+```
+
+### Remove the TPM2 LUKS key (optional)
+
+If you don't want to tie your disk encryption to the TPM2 module, you can remove that key:
+
+```bash
+# check which slot has the clevis / TPM2 key
+sudo cryptsetup luksDump /dev/nvme0n1p4
+
+# remove the clevis / TMP2 key, with 1 being the slot found above
+sudo clevis luks unbind -d /dev/nvme0n1p4 -s 1
+```
+
