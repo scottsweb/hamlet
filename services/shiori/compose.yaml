@@ -1,0 +1,32 @@
+x-podman:
+  in_pod: false
+
+services:
+  shiori:
+    image: ghcr.io/go-shiori/shiori:latest
+    container_name: shiori
+    hostname: shiori
+    restart: on-failure:3
+    read_only: true
+    mem_limit: 512m
+    user: 0:0
+    env_file: .env
+    volumes:
+      - ./data:/shiori:Z
+    labels:
+      caddy: http://bookmarks.example.lan, bookmarks.example.com
+      caddy.reverse_proxy: "{{ upstreams 8080 }}"
+      caddy.header: "-X-Frame-Options"
+      caddy.log:
+      caddy.sablier.session_duration: 30m
+      caddy.sablier.names: shiori
+      caddy.sablier.dynamic:
+      sablier.enable: true
+      com.centurylinklabs.watchtower.enable: true
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: proxy
