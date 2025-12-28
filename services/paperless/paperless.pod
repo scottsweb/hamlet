@@ -1,0 +1,5 @@
+[Pod]
+PodName=paperless
+UserNS=keep-id
+HostName=paperless
+Network=proxy.network

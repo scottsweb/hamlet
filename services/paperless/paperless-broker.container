@@ -1,0 +1,29 @@
+[Unit]
+Description=Paperless Broker (Redis)
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=1
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/paperless/data/redis 
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/library/redis:8
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=paperless.pod
+
+Volume=%h/.config/containers/paperless/data/redis:/data:Z
+
+User=1000
+
+PodmanArgs=--memory 256m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target

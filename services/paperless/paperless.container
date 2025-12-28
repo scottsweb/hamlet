@@ -1,0 +1,40 @@
+[Unit]
+Description=Paperless
+Requires=podman.socket paperless-broker.service
+After=podman.socket paperless-broker.service
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/%p/data/data %h/.config/containers/%p/data/media %h/.config/containers/%p/data/export %h/.config/containers/%p/data/consume
+ExecStartPre=-/usr/bin/touch %h/.config/containers/%p/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=ghcr.io/paperless-ngx/paperless-ngx:latest
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=paperless.pod
+
+Volume=%h/.config/containers/%p/data/data:/usr/src/paperless/data:Z
+Volume=%h/.config/containers/%p/data/media:/usr/src/paperless/media:z
+Volume=%h/.config/containers/%p/data/export:/usr/src/paperless/export:z
+Volume=%h/.config/containers/%p/data/consume:/usr/src/paperless/consume:z
+
+EnvironmentFile=%h/.config/containers/%p/.env
+
+Label=caddy="http://paperless.example.lan, paperless.example.com"
+Label=caddy.reverse_proxy="{{upstreams 8000}}"
+Label=caddy.header=-X-Frame-Options
+Label=caddy.log
+
+User=1000
+
+PodmanArgs=--memory 1024m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target
