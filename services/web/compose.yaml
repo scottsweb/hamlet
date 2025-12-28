@@ -1,0 +1,42 @@
+services:
+  web:
+    image: docker.io/joseluisq/static-web-server:latest
+    container_name: web
+    hostname: web
+    restart: always
+    read_only: true
+    mem_limit: 256m
+    command: -g info
+    env_file: .env
+    volumes:
+      - ./data:/public:ro,Z
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    networks:
+      web:
+        ipv4_address: 172.1.1.2
+
+  web-cloudflared:
+    image: docker.io/cloudflare/cloudflared:latest
+    container_name: web-cloudflared
+    hostname: webcloudflared
+    restart: always
+    read_only: true
+    mem_limit: 256m
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_WEB_TOKEN}
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    depends_on:
+      - web
+    networks:
+      web:
+        ipv4_address: 172.1.1.3
+
+networks:
+  web:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.1.1.0/16
+          gateway: 172.1.1.1
