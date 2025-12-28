@@ -1,0 +1,43 @@
+[Unit]
+Description=Jellyfin
+Requires=podman.socket
+After=podman.socket
+
+[Service]
+TimeoutStartSec=900
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/%p/data/cache %h/.config/containers/%p/data/config
+ExecStartPre=-/usr/bin/touch -c %h/.config/containers/%p/.env
+Restart=on-failure
+RestartSec=5
+StartLimitBurst=90
+SuccessExitStatus=0 143
+
+[Container]
+Image=ghcr.io/jellyfin/jellyfin:latest
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+Volume=%h/.config/containers/%p/data/cache:/cache:Z
+Volume=%h/.config/containers/%p/data/config:/config:Z
+Volume=/mnt/data/media:/media/Media:ro,z
+
+Network=proxy.network
+PublishPort=7359:7359/udp
+
+AddDevice=/dev/dri:/dev/dri
+
+EnvironmentFile=%h/.config/containers/%p/.env
+
+Label=caddy="http://jellyfin.example.lan, jellyfin.example.com"
+Label=caddy.reverse_proxy="{{upstreams 8096}}"
+Label=caddy.header=-X-Frame-Options
+Label=caddy.log
+
+UserNS=keep-id
+PodmanArgs=--memory 8192m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target
