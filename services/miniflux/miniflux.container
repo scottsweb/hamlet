@@ -1,0 +1,31 @@
+[Unit]
+Description=Miniflux
+Requires=podman.socket miniflux-db.service
+After=podman.socket miniflux-db.service
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/miniflux/miniflux:latest
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=miniflux.pod
+
+EnvironmentFile=%h/.config/containers/%p/.env
+
+Label=caddy="http://miniflux.example.lan, miniflux.example.com"
+Label=caddy.reverse_proxy="{{upstreams 8080}}"
+Label=caddy.header=-X-Frame-Options
+Label=caddy.log
+
+PodmanArgs=--memory 256m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,5 @@
+[Pod]
+PodName=miniflux
+UserNS=keep-id
+HostName=miniflux
+Network=proxy.network

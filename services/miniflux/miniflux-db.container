@@ -1,0 +1,32 @@
+[Unit]
+Description=Miniflux DB (Postgres)
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/miniflux/data
+ExecStartPre=-/usr/bin/touch %h/.config/containers/miniflux/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/postgres:13-alpine
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=miniflux.pod
+
+Volume=%h/.config/containers/miniflux/data:/var/lib/postgresql/data:Z
+
+EnvironmentFile=%h/.config/containers/miniflux/.env
+
+User=1000
+
+PodmanArgs=--memory 256m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target
