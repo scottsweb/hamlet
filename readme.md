@@ -8,7 +8,8 @@ This majority of the containers run rootless and for the few that don't, I will 
 
 The Butane file here is very much a work in progress, the eventual goal is to have a completely replicable home server... but I also like the idea of having a minimal Butane file that acts as a simple starting point. That's what you'll find right now. The following instructions are for a bare metal install of [uCore](https://github.com/ublue-os/ucore).
 
-1. Edit beep.butane with your own [keys](https://coreos.github.io/butane/getting-started/#writing-and-using-butane-configs) and [password](https://coreos.github.io/butane/examples/#using-password-authentication) for the `core` user
+1. Edit `beep.butane` with your own [keys](https://coreos.github.io/butane/getting-started/#writing-and-using-butane-configs) and [password](https://coreos.github.io/butane/examples/#using-password-authentication) for the `core` user
+1. Edit `beep.butane` and add a custom hostname (around line `32`)
 1. Install [Butane](https://coreos.github.io/butane/getting-started/) and create your [Ignition](https://coreos.github.io/ignition/) file `butane beep.butane -o beep.ign`
 1. Serve the Ignition file on your local network, you can use something like [serve](https://github.com/vercel/serve)
 1. Write the [CoreOS](https://www.fedoraproject.org/coreos/) `.iso` [to a USB stick](https://etcher.balena.io/)
