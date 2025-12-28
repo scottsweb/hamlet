@@ -1,0 +1,37 @@
+x-podman:
+  in_pod: false
+
+services:
+  nocodb:
+    image: docker.io/nocodb/nocodb:latest
+    container_name: nocodb
+    hostname: nocodb
+    restart: on-failure:3
+    mem_limit: 1024m
+    env_file: .env
+    volumes:
+      - ./data:/usr/app/data:Z
+    labels:
+      caddy: http://db.example.lan, db.example.com
+      caddy.reverse_proxy: "{{ upstreams 8080 }}"
+      caddy.header: "-X-Frame-Options"
+      caddy.log:
+      caddy.sablier.session_duration: 30m
+      caddy.sablier.names: nocodb
+      caddy.sablier.dynamic:
+      sablier.enable: true
+      com.centurylinklabs.watchtower.enable: true
+    healthcheck:
+      test: wget --spider -q --no-cache http://localhost:8080/api/v1/health || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 1
+      start_interval: 2s
+      start_period: 10s
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: proxy
