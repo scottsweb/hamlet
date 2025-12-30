@@ -23,7 +23,7 @@ sudo coreos-installer install /dev/nvme0n1 \
 
 The install will take some time and the machine will reboot a number of times. Eventually you'll be setup with a fresh copy of uCore, ready to customise.
 
-The last thing to do is check for the updates using `sudo rpm-ostree update`.
+The last thing to do is check for the updates using `sudo bootc update`.
 
 References: [Fedora CoreOS documentation](https://docs.fedoraproject.org/en-US/fedora-coreos/bare-metal/), [uCore Server Setup](https://daniel.melzaks.com/guides/ucore-server-setup/)
 
