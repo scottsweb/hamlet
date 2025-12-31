@@ -24,7 +24,7 @@ sudo coreos-installer install /dev/nvme0n1 \
 
 The install will take some time and the machine will reboot a number of times. Eventually you'll be setup with a fresh copy of uCore, ready to customise.
 
-The last thing to do is check for the updates using `sudo bootc update`.
+The last thing to do is check for updates using `sudo bootc update`.
 
 References: [Fedora CoreOS documentation](https://docs.fedoraproject.org/en-US/fedora-coreos/bare-metal/), [uCore Server Setup](https://daniel.melzaks.com/guides/ucore-server-setup/)
 
@@ -63,7 +63,7 @@ sudo rm tmpkey
 # create a key file on an external USB drive / memory pen (I did this on my laptop), the drive is formatted as ext4
 dd if=/dev/urandom of=/run/media/user/key-drive/boot-key bs=4096 count=1 
 
-# mount the USB drive on the server, us sudo dmesg or lsblk to find the /dev path
+# mount the USB drive on the server, use sudo dmesg or lsblk to find the /dev path
 sudo mount -t auto /dev/sda /mnt/pendrive
 
 # change the permissions of the boot-key
@@ -72,7 +72,7 @@ sudo chmod 600 /mnt/pendrive/boot-key
 # add the boot-key as a method to unlock LUKS
 sudo crypsudo cryptsetup luksAddKey /dev/nvme0n1p4 /mnt/pendrive/boot-key
 
-# check the keys correctly in place
+# check the key is correctly installed
 sudo cryptsetup luksDump /dev/nvme0n1p4
 ```
 
