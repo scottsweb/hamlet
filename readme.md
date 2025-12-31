@@ -13,6 +13,7 @@ The Butane file here is very much a work in progress, the eventual goal is to ha
 1. Install [Butane](https://coreos.github.io/butane/getting-started/) and create your [Ignition](https://coreos.github.io/ignition/) file `butane ucore.butane -o ucore.ign`
 1. Serve the Ignition file on your local network, you can use something like [serve](https://github.com/vercel/serve)
 1. Write the [CoreOS](https://www.fedoraproject.org/coreos/) `.iso` [to a USB stick](https://etcher.balena.io/)
+1. Turn off Secure Boot in the BIOS
 1. Once you have booted up your PC, install CoreOS using the locally served Ignition file. You'll need to change the destination disk and IP address in this example:
 
 ```bash
@@ -29,7 +30,9 @@ References: [Fedora CoreOS documentation](https://docs.fedoraproject.org/en-US/f
 
 ## Secure Boot
 
-To setup secure boot run `sudo mokutil --import /etc/pki/akmods/certs/akmods-ublue.der`. After a reboot you can check that it's working by using `sudo mokutil --sb-state`. On my machine (a Lenovo m90q), I also had to turn on secure boot in the BIOS, ensure it was in `user mode` and also set `Allow Microsoft 3rd party UEFI CA` to `ON`.
+To setup secure boot run `sudo mokutil --import /etc/pki/akmods/certs/akmods-ublue.der`. The utility will prompt for a password. The password will be used to verify this key is the one you meant to import. After the reboot and import you can check that it's all working with: `sudo mokutil --sb-state`. 
+
+On my machine (a Lenovo M90q), after re-enabling secure boot in the BIOS, I also had to ensure it was in `user mode` and that `Allow Microsoft 3rd party UEFI CA` was set to `ON`.
 
 Reference: [Enabling Secure Boot for Linux on Lenovo Secured-core
 PC’s](https://download.lenovo.com/pccbbs/mobiles_pdf/Enable_Secure_Boot_for_Linux_Secured-core_PCs.pdf)
