@@ -127,6 +127,8 @@ Auto mount the USB drive on each boot adding the following to `/etc/fstab`:
 UUID=e3ec4e11-2d55-2cfb-82a9-b22ff935e21c /mnt/pendrive auto ro,nofail 0 0
 ```
 
+Check your changes to `/etc/fstab` before a reboot with `mount -a`.
+
 ### Create the ZFS pool manually
 
 I had some issues setting up a mirrored pool in the [Cockpit](https://cockpit-project.org/) interface as my two disks are slightly different sizes, so created the pool manually:
@@ -135,7 +137,7 @@ I had some issues setting up a mirrored pool in the [Cockpit](https://cockpit-pr
 sudo zpool create -o ashift=12 -o autotrim=on -o autoreplace=on -o autoexpand=on -O encryption=aes-256-gcm -O keyformat=raw -O keylocation=file:///var/mnt/pendrive/zfs-key -O compression=lz4 -O atime=off -O casesensitivity=insensitive -f -m /var/mnt/data data mirror /dev/disk/by-path/pci-0000:03:00.0-nvme-1 /dev/disk/by-path/pci-0000:02:00.0-nvme-1
 ```
 
-I was then able to setup the individual filesystems with Cockpit (`http://localip:9090`), ensuring the correct permissions are set either in the UI or with `sudo chown $USER:$USER /var/mnt/data/myfiles` and `sudo chmod 755 /var/mnt/data/myfiles`.
+I was then able to setup the individual filesystems within Cockpit (`http://localip:9090`), ensuring the correct permissions were set either in the UI or with `sudo chown $USER:$USER /var/mnt/data/myfiles` and `sudo chmod 755 /var/mnt/data/myfiles` after creation.
 
 References: [Silverblue and Cockpit](https://www.youtube.com/watch?v=30ICVF0LRsY), [ZFS management with Cockpit](https://www.youtube.com/watch?v=A711MXlyFac)
 
@@ -185,3 +187,28 @@ WantedBy=multi-user.target
 ```
 
 And enable it with `sudo systemctl daemon-reload`, followed by `sudo systemctl enable zfs-unload-key-after-boot`.
+
+### Scrub
+
+`sudo systemctl enable --now zfs-scrub-monthly@data.timer` will enable a monthly scrub of the ZFS pool named `data`. A scrub will check the integrity of the stored data and repair if necessary. You may choose a custom time for the timer to run by editing it `sudo systemctl edit zfs-scrub-monthly@data.timer` and adding the following where indicated:
+
+```desktop
+# scrub first friday at 13:00
+[Timer]
+OnCalendar=
+OnCalendar=Fri *-*-1..7 13:00:00
+```
+
+Apply the changes with `sudo systemctl daemon-reload`.
+
+I have found scrubbing to be an extremely intensive task and in tiny PC, hard drives can get very hot. I am currently attempting to tune the process via `zfs.conf`. Edit the file with `sudo nano /etc/modprobe.d/zfs.conf` and set the following options:
+
+```bash
+# sets the maximum scrub or scan read I/Os active to each device, default is 3
+options zfs zfs_vdev_scrub_max_active=1
+
+# the maximum amount of data that can be concurrently issued at once for scrubs and resilvers per leaf vdev,default is 16777216
+options zfs zfs_scan_vdev_limit=8388608
+```
+
+After a reboot you can check the values have been applied by inspecting the relevant files in the `/sys/module/zfs/parameters/` folder.
