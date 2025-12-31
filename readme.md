@@ -8,16 +8,16 @@ This majority of the containers run rootless and for the few that don't, I will 
 
 The Butane file here is very much a work in progress, the eventual goal is to have a completely replicable home server... but I also like the idea of having a minimal Butane file that acts as a simple starting point. That's what you'll find right now. The following instructions are for a bare metal install of [uCore](https://github.com/ublue-os/ucore).
 
-1. Edit `beep.butane` with your own [keys](https://coreos.github.io/butane/getting-started/#writing-and-using-butane-configs) and [password](https://coreos.github.io/butane/examples/#using-password-authentication) for the `core` user
-1. Edit `beep.butane` and add a custom hostname (around line `32`)
-1. Install [Butane](https://coreos.github.io/butane/getting-started/) and create your [Ignition](https://coreos.github.io/ignition/) file `butane beep.butane -o beep.ign`
+1. Edit `ucore.butane` with your own [keys](https://coreos.github.io/butane/getting-started/#writing-and-using-butane-configs) and [password](https://coreos.github.io/butane/examples/#using-password-authentication) for the `core` user
+1. Edit `ucore.butane` and add a custom hostname (around line `32`)
+1. Install [Butane](https://coreos.github.io/butane/getting-started/) and create your [Ignition](https://coreos.github.io/ignition/) file `butane ucore.butane -o ucore.ign`
 1. Serve the Ignition file on your local network, you can use something like [serve](https://github.com/vercel/serve)
 1. Write the [CoreOS](https://www.fedoraproject.org/coreos/) `.iso` [to a USB stick](https://etcher.balena.io/)
 1. Once you have booted up your PC, install CoreOS using the locally served Ignition file. You'll need to change the destination disk and IP address in this example:
 
 ```bash
 sudo coreos-installer install /dev/nvme0n1 \
-    --ignition-url http://192.168.1.2:3000/beep.ign \
+    --ignition-url http://192.168.1.2:3000/ucore.ign \
     --insecure-ignition
 ```
 
@@ -84,7 +84,7 @@ rpm-ostree kargs --editor
 
 # add the following to the file, with the IDs from above, in this example a544... is the root/boot partition and e3ec... the USB key
 rd.luks.name=a54462a1-e264-1fa9-83b4-4e9efab84a33=root 
-rd.luks.key=a54462a1-e264-1fa9-83b4-4e9efab84a33=/beep-boot:UUID=e3ec4e11-2d55-2cfb-82a9-b22ff935e21c 
+rd.luks.key=a54462a1-e264-1fa9-83b4-4e9efab84a33=/boot-key:UUID=e3ec4e11-2d55-2cfb-82a9-b22ff935e21c 
 rd.luks.options=a54462a1-e264-1fa9-83b4-4e9efab84a33=keyfile-timeout=5s
 
 # save these changes and reboot
