@@ -193,7 +193,7 @@ And enable it with `sudo systemctl daemon-reload`, followed by `sudo systemctl e
 `sudo systemctl enable --now zfs-scrub-monthly@data.timer` will enable a monthly scrub of the ZFS pool named `data`. A scrub will check the integrity of the stored data and repair if necessary. You may choose a custom time for the timer to run by editing it `sudo systemctl edit zfs-scrub-monthly@data.timer` and adding the following where indicated:
 
 ```desktop
-# scrub first friday at 13:00
+# scrub first friday of each month at 13:00, verify with systemd-analyze calendar "Fri *-*-1..7 13:00:00" --iterations=3
 [Timer]
 OnCalendar=
 OnCalendar=Fri *-*-1..7 13:00:00
@@ -212,3 +212,18 @@ options zfs zfs_scan_vdev_limit=8388608
 ```
 
 After a reboot you can check the values have been applied by inspecting the relevant files in the `/sys/module/zfs/parameters/` folder.
+
+### Trim
+
+Trimming is a process that informs the SSD about which data blocks are no longer in use, allowing the SSD to manage its storage more efficiently.
+
+Although I setup my pool and datasets/filesystems with `autotrim`, I also enabled a monthly trim process too: `sudo systemctl enable --now zfs-trim-monthly@data.timer`. Once again I edited the timer `sudo systemctl edit zfs-trim-monthly@data.timer` to run on a schedule that worked for me:
+
+```desktop
+# trim first thursday of each month at 13:00, verify with: systemd-analyze calendar "Thu *-*-1..7 13:00:00" --iterations=3
+[Timer]
+OnCalendar=
+OnCalendar=Thu *-*-1..7 13:00:00
+```
+
+These changes are then applied with `sudo systemctl daemon-reload` and the status of the timer verified by running `sudo systemctl status zfs-trim-monthly@data.timer`.
