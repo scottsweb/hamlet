@@ -230,7 +230,7 @@ These changes are then applied with `sudo systemctl daemon-reload` and the statu
 
 ### Sanoid
 
-Sanoid is a open-source tool for automating ZFS filesystem snapshot management, making it easy to take, prune (delete old), and replicate snapshots. Sanoid is managed by editing `/etc/sanoid/sanoid.conf`.
+[Sanoid](https://github.com/jimsalterjrs/sanoid) is a open-source tool for automating ZFS filesystem snapshot management, making it easy to take, prune (delete old), and replicate snapshots. Sanoid is managed by editing `/etc/sanoid/sanoid.conf`.
 
 ```desktop
 # datasets
@@ -292,4 +292,20 @@ Reference: [Avoiding data disasters with Sanoid](https://opensource.com/life/16/
 
 ### Syncoid
 
-Syncoid enables fast and asynchronous replication of ZFS filesystems (datasets) between servers. I don't have a secondary server (yet), so will investigate this later.
+[Syncoid](https://github.com/jimsalterjrs/sanoid?tab=readme-ov-file#syncoid) enables fast and asynchronous replication of ZFS filesystems (datasets) between servers. I don't have a secondary server (yet), so will investigate this later.
+
+## Podman
+
+[Podman](https://podman.io/) is used to orchestrate pods and container services on the server.
+
+### Enable the Podman socket
+
+The socket allows containers and tools to manage Podman using a Docker compatible API.
+
+```bash
+# rootful (if needed)
+sudo systemctl enable --now podman.socket
+
+# core user
+systemctl --user enable --now podman.socket
+```
