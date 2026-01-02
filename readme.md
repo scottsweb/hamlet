@@ -227,3 +227,69 @@ OnCalendar=Thu *-*-1..7 13:00:00
 ```
 
 These changes are then applied with `sudo systemctl daemon-reload` and the status of the timer verified by running `sudo systemctl status zfs-trim-monthly@data.timer`.
+
+### Sanoid
+
+Sanoid is a open-source tool for automating ZFS filesystem snapshot management, making it easy to take, prune (delete old), and replicate snapshots. Sanoid is managed by editing `/etc/sanoid/sanoid.conf`.
+
+```desktop
+# datasets
+
+[data]
+    use_template = ignore
+    process_children_only = yes
+
+[data/myfiles]
+    use_template = weekly
+
+[data/backups]
+    use_template = monthly
+
+
+# templates
+
+[template_ignore]
+    autoprune = no
+    autosnap = no
+    monitor = no
+
+[template_weekly]
+    frequently = 0
+    hourly = 0
+    daily = 0
+    weekly = 12
+    monthly = 0
+    yearly = 0
+    weekly_wday = 1
+    weekly_hour = 16
+    weekly_min = 0
+    autosnap = yes
+    autoprune = yes
+    monitor = yes
+    capacity_warn = 80
+    capacity_crit = 90
+
+[template_monthly]
+    frequently = 0
+    hourly = 0
+    daily = 0 
+    weekly = 0
+    monthly = 12
+    yearly = 0
+    monthly_mday = 1
+    monthly_hour = 15
+    monthly_min = 0
+    autosnap = yes
+    autoprune = yes
+    monitor = yes
+    capacity_warn = 80
+    capacity_crit = 90
+```
+
+Debug the configuration with `sudo sanoid --take-snapshots --readonly --debug` and when you are ready, enable the Sandoid timer `sudo systemctl enable --now sanoid.timer`.
+
+Reference: [Avoiding data disasters with Sanoid](https://opensource.com/life/16/7/sanoid)
+
+### Syncoid
+
+Syncoid enables fast and asynchronous replication of ZFS filesystems (datasets) between servers. I don't have a secondary server (yet), so will investigate this later.
