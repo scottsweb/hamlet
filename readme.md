@@ -286,13 +286,15 @@ These changes are then applied with `sudo systemctl daemon-reload` and the statu
     capacity_crit = 90
 ```
 
-Debug the configuration with `sudo sanoid --take-snapshots --readonly --debug` and when you are ready, enable the Sandoid timer `sudo systemctl enable --now sanoid.timer`.
+Debug the configuration with `sudo sanoid --take-snapshots --readonly --debug` and when you are ready, enable the Sanoid timer `sudo systemctl enable --now sanoid.timer`.
 
 Reference: [Avoiding data disasters with Sanoid](https://opensource.com/life/16/7/sanoid)
 
 ### Syncoid
 
 [Syncoid](https://github.com/jimsalterjrs/sanoid?tab=readme-ov-file#syncoid) enables fast and asynchronous replication of ZFS filesystems (datasets) between servers. I don't have a secondary server (yet), so will investigate this later.
+
+Reference: (Backups with Sanoid/Syncoid)[https://github.com/ublue-os/ucore#backups-with-sanoidsyncoid]
 
 ## Podman
 
