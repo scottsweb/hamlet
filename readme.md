@@ -354,3 +354,29 @@ sudo systemctl enable --now podman-restart.service
 # core user
 systemctl --user enable --now podman-restart.service
 ```
+
+## Services
+
+* Caddy
+* Filen
+* Glance
+* Gluetun
+* GoToSocial
+* Home (home assistant and supporting services)
+* Jellyfin
+* Mazanoke
+* Miniflux
+* Nocodb
+* Node-RED
+* Ollama
+* Paperless
+* Penpot
+* Photoprism
+* Pi-hole
+* Sablier
+* Samba
+* Shiori
+* Watchtower
+* Web
+* WireGuard (wg-easy)
+* Wolf
