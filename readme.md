@@ -311,3 +311,26 @@ sudo systemctl enable --now podman.socket
 # core user
 systemctl --user enable --now podman.socket
 ```
+
+### Enable Podman auto updates 
+
+Any [Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) with `AutoUpdate=registry` will be [automatically updated](https://docs.podman.io/en/latest/markdown/podman-auto-update.1.html) on a schedule of your choosing:
+
+```bash
+# rootful (if needed)
+sudo systemctl enable --now podman-auto-update.timer
+
+# core user
+systemctl --user enable --now podman-auto-update.timer
+```
+
+To choose the time and frequency of the updates, you can edit the timer with `sudo systemctl edit podman-auto-update.timer` for rootful containers or `systemctl --user edit podman-auto-update.timer` for rootless. Drop your desired schedule where indicated and save. For example:
+
+```desktop
+# auto update every wednesday at 12:00
+[Timer]
+OnCalendar=
+OnCalendar=Wed 12:00:00
+```
+
+These changes are then applied with `sudo systemctl daemon-reload` / `systemctl --user daemon-reload` and the status of the timer verified by running `sudo systemctl status podman-auto-update.timer` / `systemctl --user status podman-auto-update.timer`.
