@@ -2,7 +2,7 @@
 
 This is version three of HAM ([version one](https://github.com/scottsweb/ham/tree/master), [version two](https://github.com/scottsweb/ham/tree/main)). The host machine is running [uCore](https://github.com/ublue-os/ucore) and uses a combination of [Podman](https://podman.io/) [Quadlets](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) and [Compose](https://docs.podman.io/en/stable/markdown/podman-compose.1.html) files. 
 
-This majority of the containers run rootless and for the few that don't, I will explain why in their individual readme files.
+This majority of the containers run rootless and for the few that don't, I will explain why in their [individual readme files](#services).
 
 ## Ignition
 
