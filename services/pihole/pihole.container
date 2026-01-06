@@ -1,0 +1,39 @@
+[Unit]
+Description=Pi-hole
+Requires=network-online.target podman.socket
+After=network-online.target podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p /var/home/core/.config/containers/%p/data/pihole /var/home/core/.config/containers/%p/data/pihole-dnsmasq
+ExecStartPre=-/usr/bin/touch /var/home/core/.config/containers/%p/.env
+Restart=always
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/pihole/pihole:latest
+
+ContainerName=%p
+HostName=beep
+
+Volume=/var/home/core/.config/containers/%p/data/pihole:/etc/pihole:Z
+Volume=/var/home/core/.config/containers/%p/data/pihole-dnsmasq:/etc/dnsmasq:Z
+
+Network=host
+DNS=127.0.0.1
+DNS=194.242.2.4
+DNS=95.215.19.53
+DNS=1.1.1.1
+
+EnvironmentFile=/var/home/core/.config/containers/%p/.env
+
+AddCapability=NET_RAW
+AddCapability=NET_ADMIN
+AddCapability=SYS_NICE
+
+PodmanArgs=--memory 1024m --add-host example:192.168.1.2 --add-host example.lan:192.168.1.2
+
+[Install]
+WantedBy=default.target
