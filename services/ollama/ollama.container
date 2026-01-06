@@ -1,0 +1,39 @@
+[Unit]
+Description=Ollama
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/%p/data
+ExecStartPre=-/usr/bin/touch %h/.config/containers/%p/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/ollama/ollama:latest
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+Volume=%h/.config/containers/%p/data/:/root/.ollama:Z
+
+Network=proxy.network
+
+AddDevice=nvidia.com/gpu=all
+
+EnvironmentFile=%h/.config/containers/%p/.env
+
+Label=caddy="http://ollama.example.lan, ollama.example.com"
+Label=caddy.reverse_proxy="{{upstreams 11434}}"
+Label=caddy.header=-X-Frame-Options
+Label=caddy.log
+
+PodmanArgs=--memory 8192m
+SecurityLabelDisable=true
+
+[Install]
+WantedBy=default.target
