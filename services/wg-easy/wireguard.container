@@ -1,0 +1,47 @@
+[Unit]
+Description=Wireguard
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/%p/data
+ExecStartPre=-/usr/bin/touch %h/.config/containers/%p/.env
+Restart=always
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=ghcr.io/wg-easy/wg-easy:latest
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+Volume=%h/.config/containers/%p/data/:/etc/wireguard:Z
+
+Network=proxy.network
+PublishPort=51820:51820/udp
+
+EnvironmentFile=%h/.config/containers/%p/.env
+
+Label=caddy="http://vpn.example.lan, vpn.example.com"
+Label=caddy.reverse_proxy="{{upstreams 51821}}"
+Label=caddy.header=-X-Frame-Options
+Label=caddy.log
+
+AddCapability=NET_ADMIN
+AddCapability=NET_RAW
+AddCapability=SYS_MODULE
+Sysctl=net.ipv4.ip_forward=1
+Sysctl=net.ipv4.conf.all.src_valid_mark=1
+#Sysctl=net.ipv6.conf.all.disable_ipv6=0
+#Sysctl=net.ipv6.conf.all.forwarding=1
+#Sysctl=net.ipv6.conf.default.forwarding=1
+
+PodmanArgs=--memory 1024m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target
