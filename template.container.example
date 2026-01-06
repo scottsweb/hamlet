@@ -1,0 +1,40 @@
+[Unit]
+Description=Service Name
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/%p %h/.config/containers/%p/data
+ExecStartPre=-/usr/bin/touch %h/.config/containers/%p/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=ghcr.io/repo/name:latest
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+Volume=%h/.config/containers/%p/data/:/container/path
+
+Network=host
+PublishPort=47984:47984/tcp
+
+AddDevice=
+AddDevice=nvidia.com/gpu=all
+
+EnvironmentFile=%h/.config/containers/%p/.env
+
+AddCapability=CAP_SYS_PTRACE
+AddCapability=CAP_NET_ADMIN
+
+PodmanArgs=--memory 256m
+SecurityLabelDisable=true
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target
