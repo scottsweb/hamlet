@@ -1,0 +1,90 @@
+variant: fcos
+version: 1.6.0
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys_local:
+        - id_ed25519.pub
+      password_hash: !insert your password: podman run -ti --rm quay.io/coreos/mkpasswd --method=yescrypt
+storage:
+  directories:
+    - path: /etc/ucore-autorebase
+      mode: 0754
+  files:
+    - path: /etc/modules-load.d/zfs.conf
+      contents:
+        inline: zfs
+      user:
+        id: 0
+boot_device:
+  luks:
+    tpm2: true
+    discard: true
+systemd:
+  units:
+    - name: set-hostname.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Set the hostname
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/bin/hostnamectl set-hostname !insert your hostname e.g. ucore
+        [Install]
+        WantedBy=multi-user.target
+    - name: ucore-unsigned-autorebase.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=uCore autorebase to unsigned OCI and reboot
+        ConditionPathExists=!/etc/ucore-autorebase/unverified
+        ConditionPathExists=!/etc/ucore-autorebase/signed
+        After=network-online.target
+        Wants=network-online.target
+        [Service]
+        Type=oneshot
+        StandardOutput=journal+console
+        ExecStart=/usr/bin/rpm-ostree rebase --bypass-driver ostree-unverified-registry:ghcr.io/ublue-os/ucore:stable-nvidia
+        ExecStart=/usr/bin/touch /etc/ucore-autorebase/unverified
+        ExecStart=/usr/bin/systemctl disable ucore-unsigned-autorebase.service
+        ExecStart=/usr/bin/systemctl reboot
+        [Install]
+        WantedBy=multi-user.target
+    - name: ucore-signed-autorebase.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=uCore autorebase to signed OCI and reboot
+        ConditionPathExists=/etc/ucore-autorebase/unverified
+        ConditionPathExists=!/etc/ucore-autorebase/signed
+        After=network-online.target
+        Wants=network-online.target
+        [Service]
+        Type=oneshot
+        StandardOutput=journal+console
+        ExecStart=/usr/bin/rpm-ostree rebase --bypass-driver ostree-image-signed:docker://ghcr.io/ublue-os/ucore:stable-nvidia
+        ExecStart=/usr/bin/touch /etc/ucore-autorebase/signed
+        ExecStart=/usr/bin/systemctl disable ucore-signed-autorebase.service
+        ExecStart=/usr/bin/systemctl reboot
+        [Install]
+        WantedBy=multi-user.target
+    - name: post-setup.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=uCore install software to overlay and reboot
+        ConditionPathExists=/etc/ucore-autorebase/unverified
+        ConditionPathExists=/etc/ucore-autorebase/signed
+        ConditionPathExists=!/etc/ucore-autorebase/setup
+        After=network-online.target
+        Wants=network-online.target
+        [Service]
+        Type=oneshot
+        StandardOutput=journal+console
+        ExecStart=/usr/bin/loginctl enable-linger core
+        ExecStart=/usr/bin/systemctl enable cockpit.service podman.service podman.socket
+        ExecStart=/usr/bin/touch /etc/ucore-autorebase/setup
+        ExecStart=/usr/bin/systemctl disable post-setup.service
+        ExecStart=/usr/bin/systemctl reboot
+        [Install]
+        WantedBy=multi-user.target
