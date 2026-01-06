@@ -1,0 +1,35 @@
+[Unit]
+Description=Sablier
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+TimeoutStartSec=900
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/%p/data
+ExecStartPre=-/usr/bin/touch %h/.config/containers/%p/.env %h/.config/containers/%p/data/sablier.yaml
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/sablierapp/sablier:latest
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+Volume=/run/user/1000/podman/podman.sock:/run/podman/podman.sock:ro,z
+Volume=%h/.config/containers/%p/data/sablier.yaml:/etc/sablier/sablier.yaml:Z
+
+Network=proxy.network
+
+EnvironmentFile=%h/.config/containers/%p/.env
+
+PodmanArgs=--memory 256m
+SecurityLabelDisable=true
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target
