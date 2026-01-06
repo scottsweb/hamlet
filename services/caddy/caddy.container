@@ -1,0 +1,61 @@
+[Unit]
+Description=Caddy
+Requires=podman.socket sablier.service
+After=podman.socket sablier.service
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+TimeoutStartSec=900
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/%p/data/config %h/.config/containers/%p/data/sites
+ExecStartPre=-/usr/bin/touch %h/.config/containers/%p/.env %h/.config/containers/%p/data/Caddyfile
+EnvironmentFile=%h/.config/containers/%p/.env
+Restart=always
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=localhost/caddy:latest
+AutoUpdate=local
+
+ContainerName=%p
+HostName=%p
+
+Volume=%h/.config/containers/%p/data/Caddyfile:/etc/caddy/Caddyfile:Z
+Volume=%h/.config/containers/%p/data/config:/config:Z
+Volume=%h/.config/containers/%p/data:/data:Z
+Volume=%h/.config/containers/%p/data/sites:/srv:Z
+Volume=/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro,z
+
+Network=proxy.network
+PublishPort=80:80
+PublishPort=443:443/tcp
+PublishPort=443:443/udp
+
+EnvironmentFile=%h/.config/containers/%p/.env
+
+Label=caddy.email="${EMAIL}"
+Label=caddy.acme_dns="cloudflare ${CLOUDFLARE_API_TOKEN}"
+Label=caddy.log
+Label=caddy.log.exclude=http.log.access
+Label=caddy.order="sablier before reverse_proxy"
+
+Label=caddy_1="http://pihole.example.lan, pihole.example.com"
+Label=caddy_1.reverse_proxy="host.containers.internal:8053"
+Label=caddy_1.header=-X-Frame-Options
+Label=caddy_1.log
+
+Label=caddy_2="cockpit.example.com"
+Label=caddy_2.reverse_proxy="host.containers.internal:9090"
+Label=caddy_2.header=-X-Frame-Options
+Label=caddy_2.log
+
+Label=caddy_3="http://*.oldexample.lan"
+Label=caddy_3.redir="https://{labels.2}.example.com{uri} permanent"
+
+PodmanArgs=--memory 512m
+SecurityLabelDisable=true
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target

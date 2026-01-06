@@ -1,0 +1,12 @@
+[Unit]
+Description=Caddy Build Monthly
+
+[Timer]
+OnCalendar=Wed *-*-1..7 13:00:00
+AccuracySec=1h
+Persistent=true
+RandomizedDelaySec=1h
+Unit=caddy-update.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,7 @@
+[Unit]
+Description=Caddy Build
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/podman build -f %h/.config/containers/caddy/Containerfile -t caddy:latest
+ExecStart=/usr/bin/podman image prune -f
