@@ -1,0 +1,28 @@
+[Unit]
+Description=Watchtower
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/%p
+ExecStartPre=-/usr/bin/touch %h/.config/containers/%p/.env
+Restart=no
+TimeoutStartSec=60
+Type=oneshot
+
+[Container]
+Image=ghcr.io/nicholas-fedor/watchtower:latest
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+Volume=/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro,z
+
+EnvironmentFile=%h/.config/containers/%p/.env
+
+PodmanArgs=--memory 512m
+SecurityLabelDisable=true
+ReadOnly=yes

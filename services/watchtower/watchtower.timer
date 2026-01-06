@@ -1,0 +1,12 @@
+[Unit]
+Description=Watchtower Weekly Updates
+
+[Timer]
+OnCalendar=Wed 14:00:00
+AccuracySec=1h
+Persistent=true
+RandomizedDelaySec=1h
+Unit=watchtower.service
+
+[Install]
+WantedBy=timers.target
