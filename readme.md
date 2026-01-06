@@ -358,11 +358,12 @@ systemctl --user enable --now podman-restart.service
 ## Services
 
 * Caddy
+* Cockpit
 * Filen
 * Glance
 * Gluetun
 * GoToSocial
-* Home (home assistant and supporting services)
+* Home Pod (Home Assistant and supporting services)
 * Jellyfin
 * Mazanoke
 * Miniflux
@@ -380,3 +381,66 @@ systemctl --user enable --now podman-restart.service
 * Web
 * WireGuard (wg-easy)
 * Wolf
+
+## Other tips
+
+### Firmware upgrades
+
+```bash
+# see what's needed
+fwupdmgr get-upgrades
+
+# do the upgrades
+sudo fwupdmgr update
+```
+
+### Rsync to different machine
+
+```bash
+# remove --dry-run when ready to copy
+rsync -vr --delete --progress /media/sloan/data/ core@192.168.1.2:/mnt/data/ --dry-run
+```
+
+### Temperature checks
+
+```bash
+# list nvme drives
+sudo nvme list
+
+# check temperature of those indexed above
+sudo nvme smart-log /dev/nvme1n1 | grep -i '^temperature'
+
+# cpu temp
+cat /sys/class/thermal/thermal_zone*/temp
+
+# nvidia gpu temp
+nvidia-smi -q -a | grep -i "temp"
+```
+
+### Debugging systemd container files
+
+```bash
+# rootful
+sudo /usr/lib/systemd/system-generators/podman-system-generator -dryrun
+
+# core user
+/usr/libexec/podman/quadlet --dryrun -user
+```
+
+### Tuned
+
+I haven't found any benefit from tuned yet... 
+
+```bash
+# enable
+sudo systemctl enable --now tuned
+
+# vidw active profile
+tuned-adm active
+
+# list all profiles
+tuned-adm list
+
+# switch profile
+sudo tuned-adm profile powersave
+```
