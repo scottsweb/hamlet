@@ -1,0 +1,5 @@
+[Pod]
+PodName=gts
+UserNS=keep-id
+HostName=gts
+Network=gts.network

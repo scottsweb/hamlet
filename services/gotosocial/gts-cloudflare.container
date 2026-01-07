@@ -1,0 +1,31 @@
+[Unit]
+Description=GoToSocial Cloudflared
+Requires=podman.socket gts-se.service gts-ge.service
+After=podman.socket gts-se.service gts-ge.service
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/gotosocial
+ExecStartPre=-/usr/bin/touch %h/.config/containers/gotosocial/.env
+EnvironmentFile=%h/.config/containers/gotosocial/.env
+Restart=always
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/cloudflare/cloudflared:latest
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=gts.pod
+
+Exec=tunnel --no-autoupdate run --token ${CLOUDFLARE_FEDIVERSE_TOKEN}
+
+Network=gts:ip=172.2.1.4
+
+PodmanArgs=--memory 256m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target

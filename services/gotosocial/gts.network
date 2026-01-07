@@ -1,0 +1,6 @@
+[Network]
+NetworkName=gts
+Driver=bridge
+Gateway=172.2.1.1
+Subnet=172.2.1.0/16
+Label=app=gts

@@ -1,0 +1,35 @@
+[Unit]
+Description=GoToSocial Gemma
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/gotosocial/data/db-ge/
+ExecStartPre=-/usr/bin/touch %h/.config/containers/gotosocial/.ge.env
+EnvironmentFile=%h/.config/containers/gotosocial/.env
+Restart=always
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/superseriousbusiness/gotosocial:latest
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=gts.pod
+
+Volume=%h/.config/containers/gotosocial/data/db-ge:/gotosocial/storage:Z
+
+Network=gts:ip=172.2.1.3
+
+EnvironmentFile=%h/.config/containers/gotosocial/.ge.env
+
+User=1000
+
+PodmanArgs=--memory 1024m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target

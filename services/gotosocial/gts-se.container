@@ -1,0 +1,35 @@
+[Unit]
+Description=GoToSocial Scott
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/gotosocial/data/db-se/
+ExecStartPre=-/usr/bin/touch %h/.config/containers/gotosocial/.se.env
+EnvironmentFile=%h/.config/containers/gotosocial/.env
+Restart=always
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/superseriousbusiness/gotosocial:latest
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=gts.pod
+
+Volume=%h/.config/containers/gotosocial/data/db-se:/gotosocial/storage:Z
+
+Network=gts:ip=172.2.1.2
+
+EnvironmentFile=%h/.config/containers/gotosocial/.se.env
+
+User=1000
+
+PodmanArgs=--memory 1024m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target
