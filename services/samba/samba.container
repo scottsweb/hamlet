@@ -1,0 +1,34 @@
+[Unit]
+Description=Samba
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/%p/data
+ExecStartPre=-/usr/bin/touch %h/.config/containers/%p/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/dockurr/samba:latest
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+Volume=%h/.config/containers/%p/data/smb.conf:/etc/samba/smb.conf:Z
+Volume=%h/.config/containers/%p/data/users.conf:/etc/samba/users.conf:Z
+Volume=/mnt/data/myfiles:/mnt/myfiles:z
+Volume=/mnt/data/backups:/mnt/backups:z,ro
+
+PublishPort=445:445/tcp
+
+EnvironmentFile=%h/.config/containers/%p/.env
+
+PodmanArgs=--memory 512m
+
+[Install]
+WantedBy=default.target
