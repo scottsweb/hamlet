@@ -1,0 +1,32 @@
+[Unit]
+Description=Gluetun VPN
+Requires=network-online.target
+After=network-online.target
+StartLimitIntervalSec=1min
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p /var/home/core/.config/containers/%p/data
+ExecStartPre=-/usr/bin/touch /var/home/core/.config/containers/%p/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/qmcgaw/gluetun
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+AddDevice=/dev/net/tun:/dev/net/tun
+
+EnvironmentFile=/var/home/core/.config/containers/%p/.env
+
+AddCapability=NET_ADMIN
+AddCapability=NET_RAW
+
+PodmanArgs=--memory 256m
+
+[Install]
+WantedBy=multi-user.target
