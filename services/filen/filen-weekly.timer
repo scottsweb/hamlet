@@ -1,0 +1,14 @@
+[Unit]
+Description=Filen Sync Every Monday
+
+[Timer]
+OnCalendar=Mon *-*-* 13:00:00
+AccuracySec=1h
+Persistent=true
+RandomizedDelaySec=1h
+Unit=filen-weekly.service
+
+
+[Install]
+WantedBy=timers.target
+

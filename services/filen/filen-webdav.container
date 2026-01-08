@@ -1,0 +1,35 @@
+[Unit]
+Description=Filen Webdav
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/filen
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+CPUQuota=15%
+
+[Container]
+Image=docker.io/filen/cli:latest
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+Exec=webdav --w-user username --w-password password --w-port 8980
+
+Volume=%h/.config/containers/filen/.filen-cli-auth-config:/root/.config/filen-cli/.filen-cli-auth-config:ro,z
+
+Network=proxy.network
+
+Label=caddy="webdav.example.com"
+Label=caddy.reverse_proxy="{{upstreams 8980}}"
+Label=caddy.log
+
+PodmanArgs=--memory 1024m
+
+[Install]
+WantedBy=default.target

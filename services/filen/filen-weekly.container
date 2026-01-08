@@ -1,0 +1,28 @@
+[Unit]
+Description=Filen Weekly
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/filen
+Restart=no
+Type=oneshot
+
+[Container]
+Image=docker.io/filen/cli:latest
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+Exec=sync
+
+Volume=%h/.config/containers/filen/.filen-cli-auth-config:/root/.config/filen-cli/.filen-cli-auth-config:ro,z
+Volume=%h/.config/containers/filen/sync-weekly.json:/root/.config/filen-cli/syncPairs.json:ro,Z
+
+Volume=/mnt/data/myfiles:/mnt/myfiles
+Volume=/mnt/data/backups:/mnt/backups
+
+PodmanArgs=--memory 16384m
