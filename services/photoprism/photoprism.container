@@ -1,0 +1,44 @@
+[Unit]
+Description=PhotoPrism
+Requires=podman.socket photoprism-mariadb.service
+After=podman.socket photoprism-mariadb.service
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/photoprism/data/storage
+ExecStartPre=-/usr/bin/touch %h/.config/containers/photoprism/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/photoprism/photoprism:latest
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=photoprism.pod
+
+Volume=/mnt/data/photos:/photoprism/originals:z
+Volume=%h/.config/containers/photoprism/data/storage:/photoprism/storage:Z
+WorkingDir=/photoprism
+
+Network=proxy
+
+#AddDevice=nvidia.com/gpu=all
+
+EnvironmentFile=%h/.config/containers/photoprism/.env
+
+Label=caddy="http://photos.example.lan, photos.example.com"
+Label=caddy.reverse_proxy="{{upstreams 2342}}"
+Label=caddy.0_header=-X-Frame-Options
+Label=caddy.1_header=-Content-Security-Policy
+Label=caddy.log
+
+User=1000
+Group=1000
+
+PodmanArgs=--memory 6144m
+
+[Install]
+WantedBy=default.target

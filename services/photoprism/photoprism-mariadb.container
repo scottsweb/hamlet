@@ -1,0 +1,38 @@
+[Unit]
+Description=PhotoPrism MariaDB
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/photoprism/data/db
+ExecStartPre=-/usr/bin/touch %h/.config/containers/photoprism/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/mariadb:11
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=photoprism.pod
+
+Exec=--innodb-buffer-pool-size=2G --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120
+
+Volume=%h/.config/containers/photoprism/data/db:/var/lib/mysql:Z
+
+Network=proxy
+
+EnvironmentFile=%h/.config/containers/photoprism/.env
+
+User=1000
+Group=1000
+
+PodmanArgs=--security-opt apparmor=unconfined --memory 2048m
+SeccompProfile=unconfined
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target

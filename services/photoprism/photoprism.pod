@@ -1,0 +1,5 @@
+[Pod]
+PodName=photoprism
+UserNS=keep-id
+HostName=photoprism
+Network=proxy.network
