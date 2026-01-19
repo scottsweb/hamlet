@@ -358,7 +358,7 @@ systemctl --user enable --now podman-restart.service
 * [Caddy](https://github.com/scottsweb/hamlet/tree/main/services/caddy)
 * [Cockpit](https://github.com/scottsweb/hamlet/tree/main/services/cockpit)
 * [Filen](https://github.com/scottsweb/hamlet/tree/main/services/filen)
-* Glance
+* [Glance](https://github.com/scottsweb/hamlet/tree/main/services/glance)
 * Gluetun
 * GoToSocial
 * Home Pod (Home Assistant and supporting services)
