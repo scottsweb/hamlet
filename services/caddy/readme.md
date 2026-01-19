@@ -13,7 +13,7 @@ Caddy is built manually using `caddy-update.service` to enable the following plu
 * [caddy-ratelimit](https://github.com/mholt/caddy-ratelimit)
 * [caddy-cloudflare-ip](https://github.com/WeidiDeng/caddy-cloudflare-ip)
 
-Place `caddy-update.service` and `caddy-update.timer` in `~/.config/systemd/user/`. Eventually I will switch this to use a `.build` quadlet ([more info](https://github.com/containers/podman/pull/22694)).
+Place `caddy-update.service` and `caddy-update.timer` in `~/.config/systemd/user/`. Eventually I will switch this to use a `.build` Quadlet ([more info](https://github.com/containers/podman/pull/22694)).
 
 ## .env
 
