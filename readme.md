@@ -355,7 +355,7 @@ systemctl --user enable --now podman-restart.service
 
 ## Services
 
-* Caddy
+* [Caddy](https://github.com/scottsweb/hamlet/tree/main/services/caddy)
 * Cockpit
 * Filen
 * Glance
@@ -442,3 +442,7 @@ tuned-adm list
 # switch profile
 sudo tuned-adm profile powersave
 ```
+
+### Additional SSH users
+
+Keys can be added to `~/.ssh/authorized_keys.d/` as individual files.
