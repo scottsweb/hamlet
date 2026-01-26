@@ -10,7 +10,7 @@ sudo systemctl enable --now cockpit.service
 
 I removed Cockpit from the Firewall as we send all traffic through Caddy instead. 
 
-```shell
+```bash
 sudo firewall-cmd --permanent --zone=FedoraServer --remove-service=cockpit
 ```
 

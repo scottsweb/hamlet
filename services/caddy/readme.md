@@ -19,7 +19,7 @@ Place `caddy-update.service` and `caddy-update.timer` in `~/.config/systemd/user
 
 Tweak the settings to add your Cloudflare token and email. 
 
-```shell
+```bash
 CLOUDFLARE_API_TOKEN=
 CADDY_INGRESS_NETWORKS=proxy
 EMAIL=
@@ -30,7 +30,7 @@ CADDY_DOCKER_NO_SCOPE=true
 
 ## Firewall
 
-```shell
+```bash
 sudo firewall-cmd --zone=FedoraServer --add-service=http
 sudo firewall-cmd --zone=FedoraServer --add-service=http --permanent
 sudo firewall-cmd --zone=FedoraServer --add-service=https
