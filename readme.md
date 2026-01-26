@@ -364,7 +364,7 @@ systemctl --user enable --now podman-restart.service
 * Home Pod (Home Assistant and supporting services)
 * [Jellyfin](https://github.com/scottsweb/hamlet/tree/main/services/jellyfin)
 * [Mazanoke](https://github.com/scottsweb/hamlet/tree/main/services/mazanoke)
-* Miniflux
+* [Miniflux](https://github.com/scottsweb/hamlet/tree/main/services/miniflux)
 * Nocodb
 * Node-RED
 * Ollama
