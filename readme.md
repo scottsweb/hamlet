@@ -362,7 +362,7 @@ systemctl --user enable --now podman-restart.service
 * [Gluetun](https://github.com/scottsweb/hamlet/tree/main/services/gluetun)
 * [GoToSocial](https://github.com/scottsweb/hamlet/tree/main/services/gotosocial)
 * Home Pod (Home Assistant and supporting services)
-* Jellyfin
+* [Jellyfin](https://github.com/scottsweb/hamlet/tree/main/services/jellyfin)
 * Mazanoke
 * Miniflux
 * Nocodb
