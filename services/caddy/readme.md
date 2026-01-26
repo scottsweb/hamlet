@@ -37,7 +37,7 @@ sudo firewall-cmd --zone=FedoraServer --add-service=https
 sudo firewall-cmd --zone=FedoraServer --add-service=https --permanent
 ```
 
-`firewall-cmd --get-default-zone` will let you know which zone you are currently using.
+`firewall-cmd --get-default-zone` will let you know which zone you are currently using. Use `sudo firewall-cmd --reload` to reload the firewall.
 
 ## Fixing buffer warnings (failed to sufficiently increase receive buffer size)
 
