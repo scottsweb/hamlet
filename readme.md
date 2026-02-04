@@ -365,7 +365,7 @@ systemctl --user enable --now podman-restart.service
 * [Jellyfin](https://github.com/scottsweb/hamlet/tree/main/services/jellyfin)
 * [Mazanoke](https://github.com/scottsweb/hamlet/tree/main/services/mazanoke)
 * [Miniflux](https://github.com/scottsweb/hamlet/tree/main/services/miniflux)
-* Nocodb
+* [NocoDB](https://github.com/scottsweb/hamlet/tree/main/services/nocodb)
 * Node-RED
 * Ollama
 * Paperless
