@@ -372,7 +372,7 @@ systemctl --user enable --now podman-restart.service
 * Penpot (coming soon)
 * [PhotoPrism](https://github.com/scottsweb/hamlet/tree/main/services/photoprism)
 * [Pi-hole](https://github.com/scottsweb/hamlet/tree/main/services/pihole)
-* [Sablier](https://github.com/scottsweb/hamlet/tree/main/services/pihole)
+* [Sablier](https://github.com/scottsweb/hamlet/tree/main/services/sablier)
 * Samba
 * Shiori
 * Watchtower
