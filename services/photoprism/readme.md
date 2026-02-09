@@ -4,7 +4,7 @@
 
 ## .env
 
-Configure the following as required:
+Configure as required:
 
 ```dotenv
 PHOTOPRISM_ADMIN_PASSWORD=!password
