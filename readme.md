@@ -368,7 +368,7 @@ systemctl --user enable --now podman-restart.service
 * [NocoDB](https://github.com/scottsweb/hamlet/tree/main/services/nocodb)
 * [Node-RED](https://github.com/scottsweb/hamlet/tree/main/services/node-red)
 * [Ollama](https://github.com/scottsweb/hamlet/tree/main/services/ollama)
-* Paperless
+* [Paperless](https://github.com/scottsweb/hamlet/tree/main/services/paperless)
 * Penpot
 * Photoprism
 * Pi-hole
