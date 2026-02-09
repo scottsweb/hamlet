@@ -66,3 +66,14 @@ sudo systemctl restart NetworkManager
 ```
 
 Or reboot.
+
+## Migration of data to a new Pi-hole
+
+Migrate your settings using the built in teleport feature. This will bring all your customisations, DNS servers etc to the new instance.
+
+On this new server I then:
+
+* Set a fixed IP address in [Cockpit](https://github.com/scottsweb/hamlet/tree/main/services/cockpit)
+* Set the DNS in Cockpit to `127.0.0.1`
+* Shutdown this server and the old server / Pi-hole
+* Booted up this server
