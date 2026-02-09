@@ -369,8 +369,8 @@ systemctl --user enable --now podman-restart.service
 * [Node-RED](https://github.com/scottsweb/hamlet/tree/main/services/node-red)
 * [Ollama](https://github.com/scottsweb/hamlet/tree/main/services/ollama)
 * [Paperless](https://github.com/scottsweb/hamlet/tree/main/services/paperless)
-* Penpot
-* Photoprism
+* Penpot (coming soon)
+* [PhotoPrism](https://github.com/scottsweb/hamlet/tree/main/services/photoprism)
 * Pi-hole
 * Sablier
 * Samba

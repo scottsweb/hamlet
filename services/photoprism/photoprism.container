@@ -25,7 +25,7 @@ WorkingDir=/photoprism
 
 Network=proxy
 
-#AddDevice=nvidia.com/gpu=all
+AddDevice=nvidia.com/gpu=all
 
 EnvironmentFile=%h/.config/containers/photoprism/.env
 

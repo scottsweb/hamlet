@@ -1,0 +1,63 @@
+# PhotoPrism
+
+[PhotoPrism®](https://www.photoprism.app/) is an photos app for the decentralized web. It makes use of the latest technologies to tag and find pictures automatically without getting in your way.
+
+## .env
+
+Configure the following as required:
+
+```dotenv
+PHOTOPRISM_ADMIN_PASSWORD=!password
+PHOTOPRISM_AUTH_MODE=password
+PHOTOPRISM_SITE_URL=https://photos.example.com/
+PHOTOPRISM_ORIGINALS_LIMIT=5000
+PHOTOPRISM_HTTP_COMPRESSION=gzip
+PHOTOPRISM_LOG_LEVEL=trace
+PHOTOPRISM_READONLY=false
+PHOTOPRISM_EXPERIMENTAL=false
+PHOTOPRISM_DISABLE_CHOWN=true
+PHOTOPRISM_DISABLE_WEBDAV=false
+PHOTOPRISM_DISABLE_SETTINGS=false
+PHOTOPRISM_DISABLE_TENSORFLOW=false
+PHOTOPRISM_DISABLE_FACES=false
+PHOTOPRISM_DISABLE_CLASSIFICATION=false
+PHOTOPRISM_DISABLE_RAW=false
+PHOTOPRISM_RAW_PRESETS=false
+PHOTOPRISM_DARKTABLE_BLACKLIST=""
+PHOTOPRISM_RAWTHERAPEE_BLACKLIST=""
+PHOTOPRISM_JPEG_QUALITY=85
+PHOTOPRISM_DETECT_NSFW=false
+PHOTOPRISM_UPLOAD_NSFW=true
+PHOTOPRISM_DATABASE_DRIVER=mysql
+PHOTOPRISM_DATABASE_SERVER=photoprism-mariadb:3306
+PHOTOPRISM_DATABASE_NAME=photoprism
+PHOTOPRISM_DATABASE_USER=photoprism
+PHOTOPRISM_DATABASE_PASSWORD=!password
+PHOTOPRISM_SITE_CAPTION=AI-Powered Photos App
+PHOTOPRISM_SITE_DESCRIPTION=
+PHOTOPRISM_SITE_AUTHOR=
+PHOTOPRISM_SPONSOR=true
+PHOTOPRISM_WAKEUP_INTERVAL=3600
+PHOTOPRISM_DISABLE_TLS=true
+NVIDIA_VISIBLE_DEVICES=all
+NVIDIA_DRIVER_CAPABILITIES=all
+PHOTOPRISM_INIT=gpu tensorflow intel
+PHOTOPRISM_FFMPEG_ENCODER=intel        
+PHOTOPRISM_UID=1000
+PHOTOPRISM_GID=1000
+
+MARIADB_AUTO_UPGRADE=1
+MARIADB_INITDB_SKIP_TZINFO=1
+MARIADB_DATABASE=photoprism
+MARIADB_USER=photoprism
+MARIADB_PASSWORD=!password
+MARIADB_ROOT_PASSWORD=!password
+```
+
+## GPU access from rootless containers
+
+Check if your rootless containers are able to use devices with `getsebool -a | grep container_use_devices`. If this setting is `off`, turn it on with:
+
+```bash
+sudo setsebool -P container_use_devices true
+```
