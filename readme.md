@@ -376,7 +376,7 @@ systemctl --user enable --now podman-restart.service
 * Samba
 * [Shiori](https://github.com/scottsweb/hamlet/tree/main/services/shiori)
 * [Watchtower](https://github.com/scottsweb/hamlet/tree/main/services/watchtower)
-* Web
+* [Web](https://github.com/scottsweb/hamlet/tree/main/services/web)
 * WireGuard (wg-easy)
 * Wolf
 
