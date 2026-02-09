@@ -6,7 +6,7 @@
 
 Configure as required and ensure you set a `PAPERLESS_SECRET_KEY` ([docs](https://docs.paperless-ngx.com/configuration/?h=secret#PAPERLESS_SECRET_KEY)):
 
-```bash
+```dotenv
 USERMAP_UID=1000
 USERMAP_GID=1000
 PAPERLESS_REDIS=redis://paperless-broker:6379
