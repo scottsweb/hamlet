@@ -4,6 +4,6 @@
 
 ## .env
 
-```bash
+```dotenv
 TZ=Europe/London
 ```

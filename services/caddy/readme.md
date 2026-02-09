@@ -19,7 +19,7 @@ Place `caddy-update.service` and `caddy-update.timer` in `~/.config/systemd/user
 
 Tweak the settings to add your Cloudflare token and email. 
 
-```bash
+```dotenv
 CLOUDFLARE_API_TOKEN=
 CADDY_INGRESS_NETWORKS=proxy
 EMAIL=

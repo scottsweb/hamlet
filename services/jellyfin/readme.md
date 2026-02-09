@@ -6,7 +6,7 @@
 
 Tweak these settings to your preference: 
 
-```bash
+```dotenv
 TZ=Europe/London
 JELLYFIN_PublishedServerUrl=https://jellyfin.example.com
 ```

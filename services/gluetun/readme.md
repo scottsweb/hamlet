@@ -10,7 +10,7 @@ Place the `.container` file in `/etc/containers/systemd/gluetun.container`.
 
 Configure as required.
 
-```bash
+```dotenv
 VPN_SERVICE_PROVIDER=
 VPN_TYPE=wireguard
 WIREGUARD_PRIVATE_KEY=

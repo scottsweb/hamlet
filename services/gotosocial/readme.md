@@ -16,7 +16,7 @@ CLOUDFLARE_FEDIVERSE_TOKEN=
 
 Example settings for your `gts.container`(s). A full list of settings can be found in the [GoToSocial docs](https://docs.gotosocial.org/en/latest/configuration/#environment-variables).
 
-```
+```dotenv
 GTS_HOST=toot.example.com
 GTS_PORT=8086
 GTS_APPLICATION_NAME=GTS

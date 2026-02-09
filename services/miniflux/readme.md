@@ -6,7 +6,7 @@
 
 Replace `!password` with your chosen database password.
 
-```bash
+```dotenv
 DATABASE_URL=postgres://miniflux:!password@miniflux-db/miniflux?sslmode=disable
 RUN_MIGRATIONS=1
 POSTGRES_USER=miniflux
