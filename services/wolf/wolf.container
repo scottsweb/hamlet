@@ -1,0 +1,56 @@
+[Unit]
+Description=Wolf Gamestreaming
+Requires=network-online.target podman.socket
+After=network-online.target podman.socket
+StartLimitIntervalSec=3m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/podman rm --force WolfPulseAudio
+Restart=on-failure
+StartLimitBurst=5
+TimeoutStartSec=2m
+RestartSec=30
+
+[Container]
+Image=ghcr.io/games-on-whales/wolf:stable
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+# AddDevice=nvidia.com/gpu=all
+Volume=nvidia-driver-vol:/usr/nvidia
+Volume=/dev/:/dev/:rw
+Volume=/run/udev:/run/udev:rw,z
+Volume=/var/home/core/.config/containers/wolf/data/:/etc/wolf:z
+Volume=/run/podman/podman.sock:/var/run/docker.sock:ro
+
+# Network=host
+# being specific with the ports opens the firewall
+PublishPort=47984:47984/tcp
+PublishPort=47989:47989/tcp
+PublishPort=47999:47999/udp
+PublishPort=48100:48100/udp
+PublishPort=48200:48200/udp
+PublishPort=48010:48010/tcp
+
+AddDevice=/dev/dri
+AddDevice=/dev/uinput
+AddDevice=/dev/uhid
+
+AddDevice=/dev/nvidia-uvm
+AddDevice=/dev/nvidia-uvm-tools
+AddDevice=/dev/nvidia-caps/nvidia-cap1
+AddDevice=/dev/nvidia-caps/nvidia-cap2
+AddDevice=/dev/nvidiactl
+AddDevice=/dev/nvidia0
+AddDevice=/dev/nvidia-modeset
+
+EnvironmentFile=/var/home/core/.config/containers/wolf/.env
+
+SecurityLabelDisable=true
+PodmanArgs=--ipc=host --device-cgroup-rule "c 13:* rmw"
+
+[Install]
+WantedBy=multi-user.target

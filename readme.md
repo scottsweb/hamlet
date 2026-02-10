@@ -378,7 +378,7 @@ systemctl --user enable --now podman-restart.service
 * [Watchtower](https://github.com/scottsweb/hamlet/tree/main/services/watchtower)
 * [Web](https://github.com/scottsweb/hamlet/tree/main/services/web)
 * WireGuard (wg-easy)
-* Wolf
+* [Wolf](https://github.com/scottsweb/hamlet/tree/main/services/wolf)
 
 ## Other tips
 
