@@ -38,3 +38,5 @@ sudo usermod -aG input root
 ## Enable controller support
 
 See [Wolf documentation for latest udev rules](https://games-on-whales.github.io/wolf/stable/user/quickstart.html#_virtual_devices_support).
+
+Reference: [udev](https://wiki.archlinux.org/title/Udev)
