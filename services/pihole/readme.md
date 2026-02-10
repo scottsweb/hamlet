@@ -2,7 +2,7 @@
 
 [Pi-hole](https://pi-hole.net/) is a software that blocks ads and trackers across your entire network. It can also provide DHCP for crappy routers that won't allow you to change the local DNS settings.
 
-I currently run this container as root in order to provide DHCP to our network. When we are able to get a new router, I will switch it to be rootless.
+I currently run this container as root in order to provide DHCP to our network. The `pihole.container` file should be placed in the `/etc/containers/systemd` folder. When we are able to get a new router, I will switch Pi-hole to be rootless and move DHCP to the router.
 
 ## .env
 
