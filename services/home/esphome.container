@@ -1,0 +1,35 @@
+[Unit]
+Description=ESPHome
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/home/data/esphome
+ExecStartPre=-/usr/bin/touch %h/.config/containers/home/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/esphome/esphome:latest
+AutoUpdate=registry
+
+ContainerName=%p
+
+Volume=%h/.config/containers/home/data/esphome:/config:z
+
+Network=host
+
+EnvironmentFile=%h/.config/containers/home/.env
+
+Label=caddy="http://esphome.example.lan, esphome.example.com"
+Label=caddy.reverse_proxy="host.containers.internal:6052"
+Label=caddy.header=-X-Frame-Options
+Label=caddy.log
+
+PodmanArgs=--memory 4096m
+
+[Install]
+WantedBy=default.target
