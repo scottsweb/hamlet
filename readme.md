@@ -41,6 +41,7 @@ PC’s](https://download.lenovo.com/pccbbs/mobiles_pdf/Enable_Secure_Boot_for_Li
 ## Encryption
 
 The Butane/Ignition file encrypts the home partition of the drive using the [Trusted Platform Module](https://wiki.archlinux.org/title/Trusted_Platform_Module) (TPM2) and [LUKS](https://docs.fedoraproject.org/en-US/quick-docs/encrypting-drives-using-LUKS/#_encrypting_block_devices_using_dm_cryptluks). In many instances, this will be sufficient, but I also like to set a password and create a USB key for decryption.
+Use `lsblk --fs` to list all partitions and their UUIDs. Partitions using an FSTYPE of `crypto_LUKS` are your encrypted partitions.
 
 ### Add a passphrase / password LUKS key
 
