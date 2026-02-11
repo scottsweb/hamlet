@@ -2,7 +2,9 @@
 
 [Caddy](https://caddyserver.com/) is a powerful, extensible platform to serve your sites, services, and apps, written in Go.
 
-For this server, Caddy acts as a reverse proxy to the containers. It also configures SSL automatically for each sub-domain.
+For this server, Caddy acts as a reverse proxy to the containers. It also configures SSL automatically for each sub-domain. It's a core piece of the puzzle, along with [Pi-hole](https://github.com/scottsweb/hamlet/tree/main/services/pihole) (for local DNS) and [Sablier](https://github.com/scottsweb/hamlet/tree/main/services/sablier) (for container orchestration).
+
+Pay particular attention to `Label`s section of the `caddy.container` file and similar labels on other containers.
 
 ## Building
 
