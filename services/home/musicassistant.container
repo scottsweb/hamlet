@@ -1,0 +1,38 @@
+[Unit]
+Description=Music Assistant
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/home/data/musicassistant
+ExecStartPre=-/usr/bin/touch %h/.config/containers/home/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=ghcr.io/music-assistant/server:latest
+AutoUpdate=registry
+
+ContainerName=%p
+
+Volume=%h/.config/containers/home/data/musicassistant:/data:z
+
+Network=host
+PublishPort=8927:8927/tcp
+PublishPort=8097:8097/tcp
+
+EnvironmentFile=%h/.config/containers/home/.env
+
+Label=caddy="http://music.example.lan, music.example.com"
+Label=caddy.reverse_proxy="host.containers.internal:8095"
+Label=caddy.header=-X-Frame-Options
+Label=caddy.log
+
+PodmanArgs=--memory 4096m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target
