@@ -1,0 +1,12 @@
+[Unit]
+Description=Alternate Day Backup of Containers to ZFS
+
+[Timer]
+OnCalendar=*-*-1/2 11:00:00
+AccuracySec=1h
+Persistent=true
+RandomizedDelaySec=1h
+Unit=container-backup.service
+
+[Install]
+WantedBy=timers.target

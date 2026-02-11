@@ -1,0 +1,7 @@
+[Unit]
+Description=Rsync Container Data to ZFS
+
+[Service]
+ExecStart=/usr/bin/rsync -vzr --delete --progress --update --exclude 'procps' --exclude 'containers/pihole/data/pihole/logrotate' --exclude 'containers/wolf/data/profile-data' --exclude 'containers/node-red/data/node_modules' --exclude 'containers/node-red/data/.npm' --exclude 'containers/warrior/data' --exclude 'systemd/user/podman-auto-update.timer.d' --exclude 'systemd/user/sockets.target.wants' --exclude 'systemd/user/default.target.wants' --exclude 'systemd/user/timers.target.wants' --exclude 'containers/wolf/data/fake-udev' /var/home/core/.config/ /mnt/data/backups/ucore/
+Restart=no
+Type=oneshot

@@ -1,0 +1,7 @@
+[Unit]
+Description=DuckDNS Ping
+
+[Service]
+ExecStart=/usr/bin/echo url="https://www.duckdns.org/update?domains=example.domain.com&token=!password&ip=" | /usr/bin/curl -k -o /tmp/duck.log -K -
+Restart=no
+Type=oneshot
