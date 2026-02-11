@@ -1,0 +1,17 @@
+[Pod]
+PodName=home
+UserNS=keep-id
+HostName=home
+Network=proxy.network
+
+# mqtt
+PublishPort=1883:1883
+PublishPort=9001:9001
+
+# esphome
+# PublishPort=6052:6052
+
+# voice
+PublishPort=10300:10300
+PublishPort=10200:10200
+PublishPort=10400:10400
