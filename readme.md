@@ -381,7 +381,7 @@ systemctl --user enable --now podman-restart.service
 * [Shiori](https://github.com/scottsweb/hamlet/tree/main/services/shiori)
 * [Watchtower](https://github.com/scottsweb/hamlet/tree/main/services/watchtower)
 * [Web](https://github.com/scottsweb/hamlet/tree/main/services/web)
-* WireGuard (wg-easy)
+* [WireGuard (wg-easy)](https://github.com/scottsweb/hamlet/tree/main/services/wg-easy)
 * [Wolf](https://github.com/scottsweb/hamlet/tree/main/services/wolf)
 * [Utilities / Other](https://github.com/scottsweb/hamlet/tree/main/utilities)
 
