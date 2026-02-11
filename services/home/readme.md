@@ -47,7 +47,11 @@ sudo udevadm trigger
 
 `ls -l /dev/ttyUSB0` should show the device is part of the `dialout` group. You can also test the rules are firing with `sudo udevadm test /dev/ttyUSB0`.
 
-References: [Access USB from rootless container](https://bugzilla.redhat.com/show_bug.cgi?id=1770553), [udev rule tips](https://gist.github.com/edro15/1c6cd63894836ed982a7d88bef26e4af)
+References: [Access USB from rootless container](https://bugzilla.redhat.com/show_bug.cgi?id=1770553), [udev rule tips](https://gist.github.com/edro15/1c6cd63894836ed982a7d88bef26e4af), [Using Yubikey for GPG & SSH in WSL](https://github.com/maxkagamine/dotfiles?tab=readme-ov-file#using-yubikey-for-gpg--ssh-in-wsl)
+
+### Tracking containers with Home Assistant
+
+The [Monitor Docker Home Assistant component](https://github.com/ualex73/monitor_docker) is useful for managing and monitoring containers from within Home Assistant.
 
 ## Music Assistant
 
@@ -59,3 +63,7 @@ References: [Access USB from rootless container](https://bugzilla.redhat.com/sho
 sudo firewall-cmd --permanent --zone=FedoraServer --add-port=8097/tcp
 sudo firewall-cmd --reload
 ```
+
+## Useful links
+
+* [LaMetric icon reference](https://developer.lametric.com/icons)

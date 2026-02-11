@@ -81,3 +81,5 @@ core:1000:core:1000:!password
 ```
 
 The password is a clear text password of your choosing.
+
+Reference: [Setting up Samba on Fedora](https://docs.fedoraproject.org/en-US/quick-docs/samba/)

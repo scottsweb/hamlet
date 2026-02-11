@@ -450,3 +450,17 @@ sudo tuned-adm profile powersave
 ### Additional SSH users
 
 Keys can be added to `~/.ssh/authorized_keys.d/` as individual files.
+
+## Useful links
+
+* [How to install multi-container applications with Podman quadlets](https://giacomo.coletto.io/blog/podman-quadlets/)
+* [systemd units using Podman Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html)
+* [systemd specifiers](https://manpages.debian.org/stretch/systemd/systemd.unit.5.en.html)
+* [Butane examples](https://coreos.github.io/butane/examples/#files)
+* [Shortcomings of rootless Podman](https://github.com/containers/podman/blob/main/rootless.md)
+* [User IDs and (rootless) containers with Podman](https://blog.christophersmart.com/2021/01/26/user-ids-and-rootless-containers-with-podman/)
+* [Debugging volumes in rootles containers](https://www.redhat.com/sysadmin/debug-rootless-podman-mounted-volumes)
+* [Using volumes with rootless Podman](https://www.tutorialworks.com/podman-rootless-volumes/)
+* [Podman troubleshooting](https://github.com/containers/podman/blob/main/troubleshooting.md)
+* [When to use :z or :Z on Podman mounts](https://unix.stackexchange.com/questions/651198/podman-volume-mounts-when-to-use-the-z-or-z-suffix)
+* [Tips on fixing SELinux labels](https://unix.stackexchange.com/questions/240813/how-to-remove-selinux-label/240884#240884?s=bfed9cf1b8634c10aad788109dbd0930)
