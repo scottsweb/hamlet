@@ -53,3 +53,11 @@ net.core.wmem_max=7500000
 ```
 
 Reload your config changes: `sudo sysctl -p /etc/sysctl.d/99-buffer-size.conf` and check they have been correctly set: `sudo sysctl net.core.rmem_max` and `sudo sysctl net.core.wmem_max`.
+
+## Domains / SSL
+
+Every container with a web UI (that's most of them) has two domains. A local `.lan` for `http` traffic and a `.com` for `https` traffic. 
+
+The domain is a cheap one registered with Cloudflare that points to an internal IP address (`192.168.11.2`). Caddy uses the [Cloudflare module](https://github.com/caddy-dns/cloudflare) to generate SSL certificates via DNS challenges. That means SSL on our local network using a proper domain name (e.g. `https://miniflux.example.com`). The domain works when we are on our home network or connect back via a VPN ([WireGuard](https://github.com/scottsweb/hamlet/tree/main/services/wg-easy)). There are plenty of other [providers available](https://github.com/orgs/caddy-dns/repositories) too, so I will probably switch from Cloudflare at some point.
+
+The `.lan` domains are just a backup. There is no SSL and they need to manually added to the [Pi-hole](https://github.com/scottsweb/hamlet/tree/main/services/pihole) (under `Settings → Local DNS Records`) in order to resolve (e.g. `jellyfin.example.lan` points to `192.168.11.2`).
