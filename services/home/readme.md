@@ -47,6 +47,8 @@ sudo udevadm trigger
 
 `ls -l /dev/ttyUSB0` should show the device is part of the `dialout` group. You can also test the rules are firing with `sudo udevadm test /dev/ttyUSB0`.
 
+References: [Access USB from rootless container](https://bugzilla.redhat.com/show_bug.cgi?id=1770553), [udev rule tips](https://gist.github.com/edro15/1c6cd63894836ed982a7d88bef26e4af)
+
 ## Music Assistant
 
 [Music Assistant](https://www.music-assistant.io/) is a music library manager for your offline and online music sources which can easily stream your favourite music to a wide range of supported players and be combined with the power of Home Assistant!
