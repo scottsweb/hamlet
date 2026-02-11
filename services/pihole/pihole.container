@@ -16,7 +16,7 @@ RestartSec=10
 Image=docker.io/pihole/pihole:latest
 
 ContainerName=%p
-HostName=beep
+HostName=corehole
 
 Volume=/var/home/core/.config/containers/%p/data/pihole:/etc/pihole:Z
 Volume=/var/home/core/.config/containers/%p/data/pihole-dnsmasq:/etc/dnsmasq:Z
