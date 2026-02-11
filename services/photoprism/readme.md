@@ -61,3 +61,11 @@ Check if your rootless containers are able to use devices with `getsebool -a | g
 ```bash
 sudo setsebool -P container_use_devices true
 ```
+
+## Custom indexing 
+
+We index PhotoPrism once per week at a specific time as it can be a fairly intensive task. This is managed with `photoprism-index.service` and `photoprism-index.timer`. 
+
+Adjust the timer to a schedule that suits you. We run ours just after our phones do a weekly backup/sync to the server.
+
+Place both files in the `~/.config/systemd/user/` folder, then run `systemctl --user daemon-reload`, followed by `systemctl --user enable --now photoprism-index.timer`. 

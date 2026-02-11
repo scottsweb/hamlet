@@ -1,0 +1,12 @@
+[Unit]
+Description=PhotoPrism Index Every Monday
+
+[Timer]
+OnCalendar=Mon *-*-* 11:00:00
+AccuracySec=1h
+Persistent=true
+RandomizedDelaySec=1h
+Unit=photoprism-index.service
+
+[Install]
+WantedBy=timers.target

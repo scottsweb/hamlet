@@ -1,0 +1,7 @@
+[Unit]
+Description=PhotoPrism Index
+
+[Service]
+ExecStart=/usr/bin/podman exec -t photoprism photoprism index -c
+Restart=no
+Type=oneshot
