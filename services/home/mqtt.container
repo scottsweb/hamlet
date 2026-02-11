@@ -1,0 +1,36 @@
+[Unit]
+Description=MQTT
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/home/data/mqtt/config %h/.config/containers/home/data/mqtt/log %h/.config/containers/home/data/mqtt/data
+ExecStartPre=-/usr/bin/touch %h/.config/containers/home/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/eclipse-mosquitto:latest
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=home.pod
+
+Volume=%h/.config/containers/home/data/mqtt/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro,Z
+Volume=%h/.config/containers/home/data/mqtt/config/password.txt:/mosquitto/config/password.txt:ro,Z
+Volume=%h/.config/containers/home/data/mqtt/log:/mosquitto/log:Z
+Volume=%h/.config/containers/home/data/mqtt/data:/mosquitto/data:Z
+
+EnvironmentFile=%h/.config/containers/home/.env
+
+User=1000
+Group=1000
+
+PodmanArgs=--memory 256m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target
