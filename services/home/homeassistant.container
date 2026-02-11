@@ -1,0 +1,42 @@
+[Unit]
+Description=Home Assistant
+Requires=podman.socket home-pod.service ollama.service
+After=podman.socket home-pod.service ollama.service
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/home/data/homeassistant
+ExecStartPre=-/usr/bin/touch %h/.config/containers/home/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=ghcr.io/home-assistant/home-assistant:stable
+AutoUpdate=registry
+
+ContainerName=%p
+
+Volume=/etc/localtime:/etc/localtime:ro
+Volume=%h/.config/containers/home/data/homeassistant:/config:z
+Volume=/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro,z
+#Volume=/run/dbus:/run/dbus:ro
+
+Network=host
+
+AddDevice=/dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_d2fd8bece942ed11bc1747ab2a61ed69-if00-port0:/dev/ttyUSB0
+
+EnvironmentFile=%h/.config/containers/home/.env
+
+Label=caddy="http://home.example.lan, home.example.com"
+Label=caddy.reverse_proxy="host.containers.internal:8123"
+Label=caddy.header=-X-Frame-Options
+Label=caddy.log
+
+GroupAdd=keep-groups 
+
+PodmanArgs=--memory 2048m --privileged
+
+[Install]
+WantedBy=default.target
