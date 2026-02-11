@@ -1,0 +1,31 @@
+[Unit]
+Description=Whisper
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/home/data/whisper
+ExecStartPre=-/usr/bin/touch %h/.config/containers/home/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/rhasspy/wyoming-whisper:latest
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=home.pod
+
+Exec=--model distil-small.en --language en
+
+Volume=%h/.config/containers/home/data/whisper:/data:Z
+
+EnvironmentFile=%h/.config/containers/home/.env
+
+PodmanArgs=--memory 2048m
+
+[Install]
+WantedBy=default.target

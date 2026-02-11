@@ -1,0 +1,32 @@
+[Unit]
+Description=OpenWakeWord
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/home/data/wakeword
+ExecStartPre=-/usr/bin/touch %h/.config/containers/home/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/rhasspy/wyoming-openwakeword:latest
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=home.pod
+
+Exec=--custom-model-dir /custom
+
+Volume=%h/.config/containers/home/data/wakeword:/custom:Z
+
+EnvironmentFile=%h/.config/containers/home/.env
+
+PodmanArgs=--memory 1024m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target

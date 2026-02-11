@@ -1,0 +1,32 @@
+[Unit]
+Description=Piper
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/home/data/piper
+ExecStartPre=-/usr/bin/touch %h/.config/containers/home/.env
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=docker.io/rhasspy/wyoming-piper:latest
+AutoUpdate=registry
+
+ContainerName=%p
+Pod=home.pod
+
+Exec=--voice en-gb-southern_english_female-low --length-scale 0.7 --noise-w-scale 0.8
+
+Volume=%h/.config/containers/home/data/piper:/data:Z
+
+EnvironmentFile=%h/.config/containers/home/.env
+
+PodmanArgs=--memory 1024m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target
