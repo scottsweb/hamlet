@@ -387,6 +387,10 @@ systemctl --user enable --now podman-restart.service
 
 ## Other tips
 
+### Add additional SSH users
+
+Add additional public keys to `.ssh/authorized_keys.d/` as separate files.
+
 ### Firmware upgrades
 
 ```bash

@@ -68,3 +68,4 @@ sudo firewall-cmd --reload
 
 * [LaMetric icon reference](https://developer.lametric.com/icons)
 * [Sensitivity adjustment for Aqara vibration sensor](https://community.home-assistant.io/t/zha-xiaomi-aqara-vibration-sensor-settings/152917/47)
+* [Voice support for Music Assistant](https://github.com/music-assistant/voice-support)
