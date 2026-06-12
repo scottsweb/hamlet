@@ -60,9 +60,12 @@ The [Monitor Docker Home Assistant component](https://github.com/ualex73/monitor
 ### Firewall
 
 ```bash
+sudo firewall-cmd --permanent --add-service=mdns
 sudo firewall-cmd --permanent --zone=FedoraServer --add-port=8097/tcp
 sudo firewall-cmd --reload
 ```
+
+mDNS allows for the discovery of Sendspin players. Port 8087 is the direct streaming port for your Music Assistant server.
 
 ## Useful links
 
