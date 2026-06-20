@@ -31,8 +31,10 @@ Label=caddy.reverse_proxy="host.containers.internal:8095"
 Label=caddy.header=-X-Frame-Options
 Label=caddy.log
 
-PodmanArgs=--memory 4096m
-ReadOnly=yes
+AddCapability=CAP_DAC_READ_SEARCH
+AddCapability=CAP_SYS_ADMIN
+
+PodmanArgs=--memory 8192m
 
 [Install]
 WantedBy=default.target
