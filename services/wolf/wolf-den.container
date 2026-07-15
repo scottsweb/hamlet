@@ -1,0 +1,38 @@
+[Unit]
+Description=Wolf Den
+Requires=network-online.target podman.socket wolf.service
+After=network-online.target podman.socket wolf.service
+StartLimitIntervalSec=3m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/%p/data
+ExecStartPre=-/usr/bin/touch %h/.config/containers/%p/.env
+Restart=on-failure
+StartLimitBurst=5
+TimeoutStartSec=2m
+RestartSec=30
+
+[Container]
+Image=ghcr.io/games-on-whales/wolf-den:stable
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+# needs socket
+Volume=%h/.config/containers/%p/data/:/app/wolf-den:Z
+Volume=/var/home/core/.config/containers/wolf/data/covers:/etc/wolf/covers:z
+Volume=/var/home/core/.config/containers/wolf/data/compatibilitytools.d:/etc/wolf/compatibilitytools.d:z
+
+Network=proxy.network
+
+EnvironmentFile=/var/home/core/.config/containers/%p/.env
+
+Label=caddy="http://wolf.example.lan, wolf.example.com"
+Label=caddy.reverse_proxy="{{upstreams 8080}}"
+Label=caddy.header=-X-Frame-Options
+Label=caddy.log
+
+[Install]
+WantedBy=multi-user.target
