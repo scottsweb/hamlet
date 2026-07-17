@@ -69,6 +69,7 @@ mDNS allows for the discovery of Sendspin players. Port 8087 is the direct strea
 
 ## Useful links
 
+* [Xiaomi Cloud Tokens Extractor](https://github.com/PiotrMachowski/Xiaomi-cloud-tokens-extractor)
 * [LaMetric icon reference](https://developer.lametric.com/icons)
 * [Sensitivity adjustment for Aqara vibration sensor](https://community.home-assistant.io/t/zha-xiaomi-aqara-vibration-sensor-settings/152917/47)
 * [Built-in voice sentences](https://www.home-assistant.io/voice_control/builtin_sentences/)
