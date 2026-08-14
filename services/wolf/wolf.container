@@ -38,6 +38,7 @@ PublishPort=48010:48010/tcp
 AddDevice=/dev/dri
 AddDevice=/dev/uinput
 AddDevice=/dev/uhid
+AddDevice=/dev/ntsync
 
 AddDevice=/dev/nvidia-uvm
 AddDevice=/dev/nvidia-uvm-tools
