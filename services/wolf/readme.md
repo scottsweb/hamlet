@@ -40,3 +40,12 @@ sudo usermod -aG input root
 See [Wolf documentation for latest udev rules](https://games-on-whales.github.io/wolf/stable/user/quickstart.html#_virtual_devices_support).
 
 Reference: [udev](https://wiki.archlinux.org/title/Udev)
+
+## TuneD tweaking with Wolf and Steam
+
+Under `/utilites/` you will find `wolf-watcher` and `wolf-watcher.service`. This script monitors podman for the launch of the Steam container and adjust the [TuneD](https://tuned-project.org/) profile accordingly. The service unit file should be placed in `/etc/systemd/system/` and enabled with:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now wolf-watcher.service
+```

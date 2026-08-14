@@ -434,9 +434,9 @@ sudo /usr/lib/systemd/system-generators/podman-system-generator -dryrun
 /usr/libexec/podman/quadlet --dryrun -user
 ```
 
-### Tuned
+### TuneD
 
-I haven't found any benefit from tuned yet... 
+I am currently using TuneD to switch between the `powersave` and `throughput-performance` profiles whilst gaming via [Wolf](https://github.com/scottsweb/hamlet/tree/main/services/wolf#tuned-tweaking-with-wolf-and-steam). 
 
 ```bash
 # enable

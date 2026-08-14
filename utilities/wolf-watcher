@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Choose your TuneD profile for gaming
+TUNED_PROFILE="throughput-performance"
+
+count_active_sessions() {
+    podman ps --format "{{.Names}}" | grep -c "^WolfSteam_"
+}
+
+podman events --format "{{.Status}} {{.Name}}" | while read -r status name; do
+    if [[ "$name" == WolfSteam_* ]]; then
+        case "$status" in
+            "start")
+                echo "Session started: $name"
+                echo "Set TuneD to $TUNED_PROFILE."
+                tuned-adm profile "$TUNED_PROFILE"
+                ;;
+            "died"|"stop"|"exited")
+                echo "Session stopped: $name"
+                # Check if any other sessions are still running
+                active_count=$(count_active_sessions)
+                echo "Active WolfSteam sessions remaining: $active_count"
+                
+                if [ "$active_count" -eq 0 ]; then
+                    echo "No active sessions left. Reverting TuneD to powersave."
+                    tuned-adm profile powersave
+                else
+                    echo "Sessions still running. Keeping $TUNED_PROFILE profile active."
+                fi
+                ;;
+        esac
+    fi
+done

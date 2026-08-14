@@ -1,0 +1,13 @@
+[Unit]
+Description=Adjust TuneD Profile with Wolf Steam Sessions
+After=tuned.service podman.service
+Requires=podman.service
+
+[Service]
+Type=simple
+ExecStart=/var/home/core/bin/wolf-watcher
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
