@@ -43,9 +43,11 @@ Reference: [udev](https://wiki.archlinux.org/title/Udev)
 
 ## TuneD tweaking with Wolf and Steam
 
-Under `/utilites/` you will find `wolf-watcher` and `wolf-watcher.service`. This script monitors podman for the launch of the Steam container and adjust the [TuneD](https://tuned-project.org/) profile accordingly. The service unit file should be placed in `/etc/systemd/system/` and enabled with:
+Under `/utilites/` you will find `wolf-watcher` and `wolf-watcher.service`. This script monitors Podman for the launch of the Steam container and adjusts the [TuneD](https://tuned-project.org/) profile accordingly. The service unit file should be placed in `/etc/systemd/system/` and enabled with:
 
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable --now wolf-watcher.service
 ```
+
+The bin/script can be placed where ever you like.
