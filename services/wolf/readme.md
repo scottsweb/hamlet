@@ -54,7 +54,7 @@ The bin/script can be placed where ever you like.
 
 ## ntsync
 
-`ntsync` is a Linux kernel module designed to significantly improve the performance of Windows applications and games running on Linux via Wine or Proton. It should help with 1% lows and stuttering.Enable the kernel module with `sudo modprobe ntsync` and make it permanent on future reboots:
+`ntsync` is a Linux kernel module designed to significantly improve the performance of Windows applications and games running on Linux via Wine or Proton. It should help with 1% lows and stuttering. Enable the kernel module with `sudo modprobe ntsync` and make it permanent on future reboots:
 
 ```
 echo "ntsync" | sudo tee /etc/modules-load.d/ntsync.conf
