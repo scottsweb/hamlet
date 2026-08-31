@@ -1,0 +1,43 @@
+[Unit]
+Description=Rayfish
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=1m
+StartLimitBurst=4
+
+[Service]
+ExecStartPre=-/usr/bin/mkdir -p %h/.config/containers/%p %h/.config/containers/%p/data %h/.config/containers/%p/logs
+ExecStartPre=-/usr/bin/touch %h/.config/containers/%p/.env %h/.config/containers/%p/data/settings.toml
+Restart=on-failure
+TimeoutStartSec=60
+RestartSec=10
+
+[Container]
+Image=ghcr.io/rayfish/rayfish-umbrel:latest
+AutoUpdate=registry
+
+ContainerName=%p
+HostName=%p
+
+Volume=%h/.config/containers/%p/data/:/etc/rayfish:Z
+Volume=%h/.config/containers/%p/logs/:/var/log/rayfish:Z
+
+Network=proxy.network
+
+AddDevice=/dev/net/tun:/dev/net/tun
+
+EnvironmentFile=%h/.config/containers/%p/.env
+
+Label=caddy="http://rayfish.example.lan, rayfish.example.com"
+Label=caddy.reverse_proxy="{{upstreams 8480}}"
+Label=caddy.header=-X-Frame-Options
+Label=caddy.log
+
+AddCapability=NET_ADMIN
+AddCapability=NET_RAW
+
+PodmanArgs=--memory 512m
+ReadOnly=yes
+
+[Install]
+WantedBy=default.target
