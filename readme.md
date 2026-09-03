@@ -452,10 +452,6 @@ tuned-adm list
 sudo tuned-adm profile powersave
 ```
 
-### Additional SSH users
-
-Keys can be added to `~/.ssh/authorized_keys.d/` as individual files.
-
 ## Useful links
 
 * [How to install multi-container applications with Podman quadlets](https://giacomo.coletto.io/blog/podman-quadlets/)
